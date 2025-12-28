@@ -328,14 +328,159 @@ app.post('/api/payment/process', async (req, res) => {
 });
 
 /**
- * Block dangerous endpoints
+ * Export order to ZIP (after payment)
  */
-app.get('/api/export/*', (req, res) => {
-    res.status(403).json({ error: 'Export not allowed in trial mode' });
+app.post('/api/export/:orderId', async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        console.log(`\\n📦 Exporting: ${orderId}`);
+
+        // Check order exists
+        const ordersDir = path.join(__dirname, '../../payment/orders');
+        const orderPath = path.join(ordersDir, orderId);
+
+        if (!await fs.pathExists(orderPath)) {
+            return res.status(404).json({ success: false, error: 'Order not found' });
+        }
+
+        // Load order metadata
+        const orderMeta = JSON.parse(
+            await fs.readFile(path.join(orderPath, 'order.json'), 'utf-8')
+        );
+
+        // Create docs directory
+        const docsPath = path.join(orderPath, 'docs');
+        await fs.ensureDir(docsPath);
+
+        // Create INSTALL.md
+        await fs.writeFile(path.join(docsPath, 'INSTALL.md'),
+            `# Installation\\n\\n` +
+            `## Website\\n\`\`\`bash\\ncd website\\nnpx serve .\\n\`\`\`\\n\\n` +
+            `## Admin\\n\`\`\`bash\\ncd admin\\nnpx serve -p 3001 .\\n\`\`\`\\n\\n` +
+            `Order: ${orderId}`
+        );
+
+        // Create README
+        await fs.writeFile(path.join(orderPath, 'README.md'),
+            `# Your Project\\n\\n` +
+            `- /website - Marketing site\\n` +
+            `- /admin - Admin panel\\n` +
+            (orderMeta.plan === 'premium' ? `- /android - Android app\\n` : '') +
+            `\\nOrder: ${orderId}\\nGenerated: ${new Date().toISOString()}`
+        );
+
+        // Create exports dir
+        const exportsDir = path.join(__dirname, '../../export/exports');
+        await fs.ensureDir(exportsDir);
+
+        // Create ZIP using archiver
+        const archiver = (await import('archiver')).default;
+        const zipName = `AHteam-${orderId}.zip`;
+        const zipPath = path.join(exportsDir, zipName);
+
+        await new Promise((resolve, reject) => {
+            const output = fs.createWriteStream(zipPath);
+            const archive = archiver('zip', { zlib: { level: 9 } });
+
+            output.on('close', resolve);
+            archive.on('error', reject);
+            archive.pipe(output);
+
+            // Add all files except order.json
+            const items = fs.readdirSync(orderPath);
+            for (const item of items) {
+                if (item === 'order.json') continue;
+                const itemPath = path.join(orderPath, item);
+                if (fs.statSync(itemPath).isDirectory()) {
+                    archive.directory(itemPath, item);
+                } else {
+                    archive.file(itemPath, { name: item });
+                }
+            }
+
+            archive.finalize();
+        });
+
+        // Calculate expiration (72 hours)
+        const expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + 72);
+
+        // Register export
+        const exportsRegistryPath = path.join(__dirname, '../../export/exports-registry.json');
+        let exportsRegistry = { exports: [] };
+        if (await fs.pathExists(exportsRegistryPath)) {
+            exportsRegistry = JSON.parse(await fs.readFile(exportsRegistryPath, 'utf-8'));
+        }
+        exportsRegistry.exports.push({
+            orderId,
+            zipName,
+            zipPath,
+            createdAt: new Date().toISOString(),
+            expiresAt: expiresAt.toISOString(),
+            downloaded: false
+        });
+        await fs.writeFile(exportsRegistryPath, JSON.stringify(exportsRegistry, null, 2));
+
+        console.log(`✅ Export ready: ${zipName}`);
+
+        res.json({
+            success: true,
+            orderId,
+            downloadUrl: `/api/download/${orderId}`,
+            expiresAt: expiresAt.toISOString()
+        });
+
+    } catch (error) {
+        console.error('Export error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
-app.get('/api/download/*', (req, res) => {
-    res.status(403).json({ error: 'Download not allowed in trial mode' });
+/**
+ * Download ZIP (for paid orders only)
+ */
+app.get('/api/download/:orderId', async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // Find export
+        const exportsRegistryPath = path.join(__dirname, '../../export/exports-registry.json');
+        let exportsRegistry = { exports: [] };
+        if (await fs.pathExists(exportsRegistryPath)) {
+            exportsRegistry = JSON.parse(await fs.readFile(exportsRegistryPath, 'utf-8'));
+        }
+
+        const exp = exportsRegistry.exports.find(e => e.orderId === orderId);
+
+        if (!exp) {
+            return res.status(404).json({ error: 'Export not found. Please create export first.' });
+        }
+
+        // Check expiration
+        if (new Date(exp.expiresAt) < new Date()) {
+            return res.status(410).json({ error: 'Download link expired' });
+        }
+
+        // Check file exists
+        if (!await fs.pathExists(exp.zipPath)) {
+            return res.status(404).json({ error: 'ZIP file not found' });
+        }
+
+        // Mark as downloaded
+        exp.downloaded = true;
+        exp.downloadedAt = new Date().toISOString();
+        await fs.writeFile(exportsRegistryPath, JSON.stringify(exportsRegistry, null, 2));
+
+        console.log(`📥 Download: ${exp.zipName}`);
+
+        // Send file
+        res.download(exp.zipPath, exp.zipName);
+
+    } catch (error) {
+        console.error('Download error:', error);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 /**
