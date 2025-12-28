@@ -520,83 +520,113 @@ app.get('/', async (req, res) => {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>AHteam Trial System</title>
+      <title>AHteam Showroom</title>
+      <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
       <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #fff; min-height: 100vh; padding: 2rem; }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .subtitle { color: #94a3b8; margin-bottom: 2rem; }
-        .create-btn { background: #2563eb; color: #fff; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin-bottom: 2rem; }
-        .create-btn:hover { background: #1d4ed8; }
-        .trials { display: grid; gap: 1rem; }
-        .trial-card { background: #1e293b; border-radius: 8px; padding: 1.5rem; }
-        .trial-card h3 { margin-bottom: 0.5rem; }
-        .trial-card p { color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.5rem; }
-        .trial-links { display: flex; gap: 1rem; margin-top: 1rem; }
-        .trial-links a { background: #334155; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; color: #fff; font-size: 0.875rem; }
-        .trial-links a:hover { background: #475569; }
-        .badge { display: inline-block; background: #22c55e; color: #fff; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; }
-        .empty { text-align: center; color: #64748b; padding: 3rem; }
+        :root {
+          --bg: #0f172a;
+          --bg-light: #1e293b;
+          --primary: #3b82f6;
+          --accent: #22c55e;
+          --text: #f8fafc;
+          --text-muted: #94a3b8;
+          --border: rgba(255,255,255,0.1);
+        }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem; }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .header h1 span { color: var(--primary); }
+        .header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .btn { border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-accent { background: var(--accent); color: #000; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .create-section { background: var(--bg-light); padding: 2rem; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 3rem; text-align: center; }
+        
+        .trials-grid { display: grid; gap: 1.5rem; }
+        .trial-card { background: var(--bg-light); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .trial-info h3 { font-size: 1.25rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .trial-info p { color: var(--text-muted); font-size: 0.9rem; }
+        .badge { background: rgba(34, 197, 94, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; border: 1px solid rgba(34, 197, 94, 0.2); }
+        
+        .trial-actions { display: flex; gap: 1rem; }
+        .action-link { background: rgba(255,255,255,0.05); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem; border: 1px solid var(--border); transition: all 0.2s; }
+        .action-link:hover { background: rgba(255,255,255,0.1); }
+        .action-buy { background: var(--accent); color: #000; font-weight: 800; border-color: var(--accent); }
+
+        .empty { text-align: center; padding: 4rem; color: var(--text-muted); background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed var(--border); }
+        
+        footer { margin-top: 4rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
       </style>
     </head>
     <body>
       <div class="container">
-        <h1>🏭 AHteam Trial System</h1>
-        <p class="subtitle">Preview-only Showroom • No Download • No Export</p>
-        
-        <button class="create-btn" onclick="createTrial()">➕ Create New Trial</button>
-        
-        <h2 style="margin-bottom: 1rem;">Active Trials (${activeTrials.length})</h2>
-        
-        <div class="trials">
-          ${activeTrials.length === 0 ? '<div class="empty">No active trials</div>' : ''}
-          ${activeTrials.map(t => `
+        <div class="header">
+          <h1>🏭 <span>AH</span>team Showroom</h1>
+          <p>جرّب الأنظمة قبل الشراء • ملكية كاملة</p>
+        </div>
+
+        <div class="create-section">
+          <h2 style="margin-bottom: 1rem;">جاهز لإنشاء مشروع جديد؟</h2>
+          <button class="btn btn-primary" onclick="createTrial()">🚀 ابدأ تجربة جديدة</button>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">تجاربك الحالية</h2>
+        <div class="trials-grid">
+          ${activeTrials.length === 0 ? `
+            <div class="empty">
+              <p>لا توجد تجارب نشطة حالياً</p>
+            </div>
+          ` : activeTrials.map(t => `
             <div class="trial-card">
-              <h3>${t.projectName} <span class="badge">Active</span></h3>
-              <p>ID: ${t.id}</p>
-              <p>Expires: ${new Date(t.expiresAt).toLocaleDateString('ar-EG')} (${Math.ceil((new Date(t.expiresAt) - new Date()) / (1000 * 60 * 60 * 24))} days)</p>
-              <div class="trial-links">
-                <a href="/preview/${t.id}/" target="_blank">🌐 Website</a>
-                <a href="/preview/${t.id}/admin/login.html" target="_blank">📊 Admin</a>
-                <a href="#" onclick="buyProject('${t.id}', '${t.projectName}')" style="background: #22c55e;">💳 Buy & Own</a>
+              <div class="trial-info">
+                <h3>${t.projectName} <span class="badge">نشط</span></h3>
+                <p>ID: ${t.id}</p>
+                <p>تنتهي في: ${new Date(t.expiresAt).toLocaleDateString('ar-EG')} (باقي ${Math.ceil((new Date(t.expiresAt) - new Date()) / (1000 * 60 * 60 * 24))} أيام)</p>
+              </div>
+              <div class="trial-actions">
+                <a href="/preview/${t.id}/" target="_blank" class="action-link">🌐 عرض الموقع</a>
+                <a href="/preview/${t.id}/admin/login.html" target="_blank" class="action-link">📊 لوحة التحكم</a>
+                <a href="#" onclick="buyProject('${t.id}', '${t.projectName}')" class="action-link action-buy">💰 شراء وامتلاك</a>
               </div>
             </div>
           `).join('')}
         </div>
+
+        <footer>
+          🔒 نظام تجارب آمن • AHteam v1.0
+        </footer>
       </div>
       
       <script>
         async function createTrial() {
-          const name = prompt('Project Name:', 'My Trial Project');
+          const name = prompt('اسم المشروع:', 'مشروعي الجديد');
           if (!name) return;
-          
-          const duration = prompt('Duration (days):', '7');
-          if (!duration) return;
           
           const res = await fetch('/api/trial/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ projectName: name, duration: parseInt(duration) })
+            body: JSON.stringify({ projectName: name, duration: 7 })
           });
           
           const data = await res.json();
           if (data.success) {
-            alert('Trial created! ID: ' + data.trialId);
             location.reload();
           } else {
-            alert('Error: ' + data.error);
+            alert('حدث خطأ: ' + data.error);
           }
         }
         
         async function buyProject(trialId, projectName) {
-          const email = prompt('Enter your email:', '');
+          const email = prompt('ادخل بريدك الإلكتروني لاستلام الكود:', '');
           if (!email) return;
           
-          const plan = confirm('Premium includes Android app. Click OK for Premium ($199), Cancel for Basic ($99)') ? 'premium' : 'basic';
-          const amount = plan === 'premium' ? 199 : 99;
-          
-          if (!confirm('Confirm purchase: ' + projectName + ' (' + plan + ') for $' + amount + '?')) {
+          if (!confirm('هل أنت متأكد من شراء ' + projectName + '؟\\n\\nالسعر: 199$\\nالمحتوى: موقع + لوحة تحكم + تطبيق أندرويد + ملكية كاملة')) {
             return;
           }
           
@@ -613,18 +643,18 @@ app.get('/', async (req, res) => {
             body: JSON.stringify({
               trialId,
               email,
-              plan,
-              amount,
+              plan: 'premium',
+              amount: 199,
               paymentId: 'SIM-' + Date.now()
             })
           });
           
           const data = await res.json();
           if (data.success) {
-            alert('✅ Payment successful!\\n\\nOrder ID: ' + data.orderId + '\\n\\nYour project is ready for export.');
+            alert('✅ تم الدفع بنجاح!\\n\\nرقم الطلب: ' + data.orderId + '\\n\\nمشروعك جاهز للتحميل من صفحة الـ Export.');
             location.reload();
           } else {
-            alert('❌ Payment failed: ' + data.error);
+            alert('❌ فشل الدفع: ' + data.error);
           }
         }
       </script>
