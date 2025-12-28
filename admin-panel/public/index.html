@@ -231,6 +231,86 @@
             font-size: 0.75rem;
         }
 
+        /* Funnel */
+        .funnel-container {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .funnel-step {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .funnel-step::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -0.5rem;
+            width: 2px;
+            height: 0.5rem;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .funnel-step:last-child::after {
+            display: none;
+        }
+
+        .funnel-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .funnel-icon {
+            font-size: 1.25rem;
+            width: 32px;
+            text-align: center;
+        }
+
+        .funnel-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            flex: 1;
+            margin: 0 2rem;
+            overflow: hidden;
+            max-width: 300px;
+        }
+
+        .funnel-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s ease-out;
+        }
+
+        .funnel-step.success .funnel-fill {
+            background: var(--success);
+        }
+
+        .funnel-value {
+            font-weight: 700;
+            min-width: 50px;
+            text-align: left;
+        }
+
+        .funnel-percent {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+        }
+
         /* Footer */
         .footer {
             margin-top: 2rem;
@@ -274,6 +354,14 @@
                     <div class="value" id="stat-templates">-</div>
                 </div>
             </div>
+
+            <h3 style="margin-bottom: 1rem;">📈 Sales Funnel (First 10)</h3>
+            <div class="stat-card" style="margin-bottom: 2rem;">
+                <div class="funnel-container" id="funnel-body">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading analytics...</div>
+                </div>
+            </div>
+
             <h3 style="margin-bottom: 1rem;">آخر الطلبات</h3>
             <div class="table-container">
                 <table>
@@ -434,9 +522,50 @@
       `).join('') || '<div style="padding:2rem;text-align:center;color:var(--text-muted)">No logs</div>';
         }
 
+        // Load analytics (funnel)
+        async function loadAnalytics() {
+            const res = await fetch('/api/analytics');
+            const data = await res.json();
+            const summary = data.summary;
+
+            const steps = [
+                { id: 'landingVisits', label: 'Landing Visit', icon: '🌐' },
+                { id: 'trialsStarted', label: 'Trial Started', icon: '🚀' },
+                { id: 'previewsViewed', label: 'Preview Viewed', icon: '👁️' },
+                { id: 'buyClicked', label: 'Buy Clicked', icon: '💳' },
+                { id: 'paymentSuccess', label: 'Payment (First 10)', icon: '💰', success: true },
+                { id: 'downloadComplete', label: 'Download', icon: '📥' }
+            ];
+
+            const container = document.getElementById('funnel-body');
+            const maxVal = summary.landingVisits || 1;
+
+            container.innerHTML = steps.map((step, index) => {
+                const val = summary[step.id] || 0;
+                const percent = Math.round((val / maxVal) * 100);
+
+                return `
+                    <div class="funnel-step ${step.success ? 'success' : ''}">
+                        <div class="funnel-label">
+                            <span class="funnel-icon">${step.icon}</span>
+                            <span>${step.label}</span>
+                        </div>
+                        <div class="funnel-bar">
+                            <div class="funnel-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="funnel-value">
+                            <span class="funnel-percent">${percent}%</span>
+                            ${val}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // Init
         loadStats();
         loadRecentOrders();
+        loadAnalytics();
     </script>
 </body>
 

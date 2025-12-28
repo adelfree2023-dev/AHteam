@@ -18,6 +18,7 @@ import fs from 'fs-extra';
 import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import { logEvent } from '../../scripts/analytics-wrapper.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -117,6 +118,9 @@ app.post('/api/trial/create', async (req, res) => {
         await saveRegistry(registry);
 
         console.log(`✅ Trial created: ${trialId} (expires: ${expiresAt.toISOString()})`);
+
+        // Funnel: Trial Started
+        await logEvent('trialsStarted');
 
         res.json({
             success: true,
@@ -315,6 +319,9 @@ app.post('/api/payment/process', async (req, res) => {
 
         console.log(`✅ Payment processed: ${orderId}`);
 
+        // Funnel: Payment Success
+        await logEvent('paymentSuccess');
+
         res.json({
             success: true,
             orderId,
@@ -472,7 +479,8 @@ app.get('/api/download/:orderId', async (req, res) => {
         exp.downloadedAt = new Date().toISOString();
         await fs.writeFile(exportsRegistryPath, JSON.stringify(exportsRegistry, null, 2));
 
-        console.log(`📥 Download: ${exp.zipName}`);
+        // Funnel: Download Complete
+        await logEvent('downloadComplete');
 
         // Send file
         res.download(exp.zipPath, exp.zipName);
@@ -480,6 +488,22 @@ app.get('/api/download/:orderId', async (req, res) => {
     } catch (error) {
         console.error('Download error:', error);
         res.status(500).json({ error: error.message });
+    }
+});
+
+/**
+ * API: Track generic event (e.g. buyClicked)
+ */
+app.post('/api/analytics/track', async (req, res) => {
+    try {
+        const { event } = req.body;
+        if (event) {
+            await logEvent(event);
+            return res.json({ success: true });
+        }
+        res.status(400).json({ success: false, error: 'No event provided' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
@@ -575,6 +599,13 @@ app.get('/', async (req, res) => {
           if (!confirm('Confirm purchase: ' + projectName + ' (' + plan + ') for $' + amount + '?')) {
             return;
           }
+          
+          // Track Buy Clicked
+          fetch('/api/analytics/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: 'buyClicked' })
+          });
           
           const res = await fetch('/api/payment/process', {
             method: 'POST',

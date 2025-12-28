@@ -1,0 +1,11 @@
+{
+    "funnel": [],
+    "summary": {
+        "landingVisits": 0,
+        "trialsStarted": 0,
+        "previewsViewed": 0,
+        "buyClicked": 0,
+        "paymentSuccess": 0,
+        "downloadComplete": 0
+    }
+}

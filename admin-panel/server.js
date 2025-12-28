@@ -186,6 +186,24 @@ app.get('/api/logs', async (req, res) => {
 });
 
 /**
+ * API: Get Analytics (Funnel)
+ */
+app.get('/api/analytics', async (req, res) => {
+    try {
+        const ANALYTICS_FILE = path.join(FACTORY_DIR, 'analytics.json');
+        let data = { funnel: [], summary: { landingVisits: 0, trialsStarted: 0, previewsViewed: 0, buyClicked: 0, paymentSuccess: 0, downloadComplete: 0 } };
+
+        if (await fs.pathExists(ANALYTICS_FILE)) {
+            data = JSON.parse(await fs.readFile(ANALYTICS_FILE, 'utf-8'));
+        }
+
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+/**
  * Serve Admin Panel
  */
 app.get('*', (req, res) => {

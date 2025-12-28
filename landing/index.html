@@ -454,6 +454,15 @@
             <p>🏭 AHteam — امتلك تقنيتك</p>
         </div>
     </footer>
+
+    <script>
+        // Track Landing Visit
+        fetch('http://34.28.229.72:3000/api/analytics/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: 'landingVisits' })
+        }).catch(err => console.error('Tracking failed:', err));
+    </script>
 </body>
 
 </html>
