@@ -3,28 +3,28 @@
     "$version": "1.0.0",
     "$locked": true,
     "$lockDate": "2025-12-28",
-    "$description": "AHteam Central Contract - Single Source of Truth",
+    "$description": "AHteam Sample E-Commerce Store",
     "project": {
-        "id": "",
-        "name": "",
-        "slug": "",
+        "id": "store-demo-001",
+        "name": "متجر التقوى",
+        "slug": "altaqwa-store",
         "version": "1.0.0",
         "type": "ecommerce",
-        "createdAt": "",
+        "createdAt": "2025-12-28",
         "exportedAt": ""
     },
     "branding": {
         "logo": {
-            "primary": "",
-            "secondary": "",
-            "favicon": ""
+            "primary": "./assets/images/logo.png",
+            "secondary": "./assets/images/logo-white.png",
+            "favicon": "./assets/images/favicon.png"
         },
         "colors": {
-            "primary": "#000000",
-            "secondary": "#ffffff",
-            "accent": "#0066ff",
+            "primary": "#2563eb",
+            "secondary": "#f1f5f9",
+            "accent": "#0ea5e9",
             "background": "#ffffff",
-            "text": "#000000",
+            "text": "#1e293b",
             "success": "#22c55e",
             "warning": "#f59e0b",
             "error": "#ef4444"
@@ -33,7 +33,7 @@
             "primary": "Cairo",
             "secondary": "Inter",
             "headings": "Cairo",
-            "body": "Inter"
+            "body": "Cairo"
         },
         "style": {
             "borderRadius": "8px",
@@ -41,23 +41,23 @@
         }
     },
     "business": {
-        "name": "",
-        "legalName": "",
-        "taxId": "",
-        "email": "",
-        "phone": "",
-        "whatsapp": "",
+        "name": "متجر التقوى للتجارة الإلكترونية",
+        "legalName": "التقوى للتجارة ش.ذ.م.م",
+        "taxId": "123456789",
+        "email": "info@altaqwa-store.com",
+        "phone": "+20 100 123 4567",
+        "whatsapp": "201001234567",
         "address": {
-            "street": "",
-            "city": "",
-            "state": "",
-            "country": "",
-            "postalCode": ""
+            "street": "شارع التحرير",
+            "city": "القاهرة",
+            "state": "القاهرة",
+            "country": "مصر",
+            "postalCode": "11511"
         },
         "social": {
-            "facebook": "",
-            "instagram": "",
-            "twitter": "",
+            "facebook": "https://facebook.com/altaqwa.store",
+            "instagram": "https://instagram.com/altaqwa.store",
+            "twitter": "https://twitter.com/altaqwa_store",
             "tiktok": "",
             "youtube": ""
         },
@@ -71,23 +71,23 @@
     "content": {
         "homepage": {
             "hero": {
-                "title": "",
-                "subtitle": "",
-                "cta": "",
-                "image": ""
+                "title": "أهلاً بك في متجر التقوى",
+                "subtitle": "تسوق أفضل المنتجات بأسعار منافسة",
+                "cta": "تصفح المنتجات",
+                "image": "./assets/images/hero-bg.jpg"
             },
             "sections": []
         },
         "about": {
-            "title": "",
-            "description": "",
-            "mission": "",
-            "vision": "",
+            "title": "من نحن",
+            "description": "متجر التقوى هو وجهتك الأولى للتسوق الإلكتروني في مصر. نقدم لك أفضل المنتجات بأسعار منافسة مع خدمة توصيل سريعة لجميع المحافظات.",
+            "mission": "تقديم تجربة تسوق إلكتروني متميزة تجمع بين الجودة والسعر المناسب",
+            "vision": "أن نكون المتجر الإلكتروني الأول في المنطقة العربية",
             "images": []
         },
         "contact": {
-            "title": "",
-            "description": "",
+            "title": "تواصل معنا",
+            "description": "نحن هنا لمساعدتك. تواصل معنا في أي وقت.",
             "formFields": [
                 "name",
                 "email",
@@ -96,13 +96,13 @@
             ]
         },
         "policies": {
-            "terms": "",
-            "privacy": "",
-            "refund": "",
-            "shipping": ""
+            "terms": "الشروط والأحكام",
+            "privacy": "سياسة الخصوصية",
+            "refund": "سياسة الإرجاع والاستبدال",
+            "shipping": "سياسة الشحن والتوصيل"
         },
         "footer": {
-            "copyright": "",
+            "copyright": "© 2025 متجر التقوى. جميع الحقوق محفوظة.",
             "links": []
         }
     },
@@ -115,7 +115,7 @@
                 "productDetail": true,
                 "cart": true,
                 "checkout": true,
-                "tracking": true,
+                "tracking": false,
                 "about": true,
                 "contact": true,
                 "terms": true,
@@ -123,7 +123,7 @@
             }
         },
         "admin": {
-            "enabled": true,
+            "enabled": false,
             "modules": {
                 "dashboard": true,
                 "products": true,
@@ -136,7 +136,7 @@
             }
         },
         "mobile": {
-            "enabled": true,
+            "enabled": false,
             "platform": "android",
             "screens": {
                 "splash": true,
@@ -207,16 +207,22 @@
     },
     "meta": {
         "seo": {
-            "title": "",
-            "description": "",
-            "keywords": [],
-            "ogImage": ""
+            "title": "متجر التقوى - تسوق أونلاين",
+            "description": "متجر التقوى للتجارة الإلكترونية - أفضل المنتجات بأسعار منافسة مع توصيل لجميع المحافظات",
+            "keywords": [
+                "تسوق",
+                "متجر",
+                "أونلاين",
+                "مصر",
+                "التقوى"
+            ],
+            "ogImage": "./assets/images/og-image.jpg"
         },
         "pwa": {
             "enabled": false,
-            "name": "",
-            "shortName": "",
-            "themeColor": ""
+            "name": "متجر التقوى",
+            "shortName": "التقوى",
+            "themeColor": "#2563eb"
         },
         "analytics": {
             "enabled": false,

@@ -1,0 +1,22 @@
+{
+    "name": "@ahteam/generator",
+    "version": "1.0.0",
+    "description": "AHteam Website Generator - Factory Engine",
+    "main": "src/index.js",
+    "type": "module",
+    "scripts": {
+        "generate": "node src/index.js",
+        "generate:website": "node src/index.js --type website"
+    },
+    "keywords": [
+        "generator",
+        "website",
+        "factory"
+    ],
+    "author": "AHteam",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "fs-extra": "^11.2.0",
+        "glob": "^10.3.10"
+    }
+}
