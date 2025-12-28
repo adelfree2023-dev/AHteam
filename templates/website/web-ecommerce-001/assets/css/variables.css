@@ -3,28 +3,80 @@
  * AHteam - web-ecommerce-001
  * CSS Variables (from project.config.json)
  * ============================================
- * 
- * RULES:
- * - All values are injected from config
- * - NO hardcoded values
- * - Generator replaces {{bindings}}
- * ============================================
  */
 
 :root {
+
   /* Colors - from branding.colors */
-  --color-primary: {{global.primaryColor}};
-  --color-secondary: {{global.secondaryColor}};
-  --color-accent: {{global.accentColor}};
-  --color-background: {{global.backgroundColor}};
-  --color-text: {{global.textColor}};
-  --color-success: {{global.successColor}};
-  --color-warning: {{global.warningColor}};
-  --color-error: {{global.errorColor}};
+  --color-primary: {
+      {
+      branding.colors.primary
+    }
+  }
+
+  ;
+
+  --color-secondary: {
+      {
+      branding.colors.secondary
+    }
+  }
+
+  ;
+
+  --color-accent: {
+      {
+      branding.colors.accent
+    }
+  }
+
+  ;
+
+  --color-background: {
+      {
+      branding.colors.background
+    }
+  }
+
+  ;
+
+  --color-text: {
+      {
+      branding.colors.text
+    }
+  }
+
+  ;
+
+  --color-success: {
+      {
+      branding.colors.success
+    }
+  }
+
+  ;
+
+  --color-warning: {
+      {
+      branding.colors.warning
+    }
+  }
+
+  ;
+
+  --color-error: {
+      {
+      branding.colors.error
+    }
+  }
+
+  ;
 
   /* Fonts - from branding.fonts */
-  --font-primary: '{{global.primaryFont}}', sans-serif;
-  --font-secondary: '{{global.secondaryFont}}', sans-serif;
+  --font-primary: '{{branding.fonts.primary}}',
+  sans-serif;
+  --font-secondary: '{{branding.fonts.secondary}}',
+  sans-serif;
 
   /* Spacing */
   --spacing-xs: 0.25rem;

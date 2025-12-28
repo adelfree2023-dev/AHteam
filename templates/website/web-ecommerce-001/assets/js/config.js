@@ -6,8 +6,6 @@
  * 
  * This file is GENERATED from project.config.json
  * DO NOT EDIT MANUALLY
- * 
- * Contains all config values needed by the template
  * ============================================
  */
 
@@ -50,7 +48,7 @@ const CONFIG = {
     // Localization
     localization: {
         defaultLanguage: "{{localization.defaultLanguage}}",
-        direction: "{{localization.direction[localization.defaultLanguage]}}"
+        direction: "rtl"
     }
 };
 
