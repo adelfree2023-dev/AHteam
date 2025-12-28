@@ -347,12 +347,24 @@ async function resolveVariant(variantName) {
     const profileTokens = {};
 
     // Merge Strategy: Start with global, then override with profile
+    // 3. Resolve Token Profile (Hierarchy: family.profile -> family -> global)
+    const profileRef = variant.tokenProfile || 'global';
+    const profileParts = profileRef.split('.');
+    const familyId = profileParts[0];
+    const profileName = profileParts[1] || 'default';
+
     const tokenGroups = ['colors', 'fonts', 'spacing', 'radius', 'shadows', 'commerce'];
 
     for (const group of tokenGroups) {
         const globalGroup = globalTokens[`global.${group}`] || {};
-        const activeGroup = globalTokens[`${profile}.${group}`] || {};
-        profileTokens[group] = { ...globalGroup, ...activeGroup };
+        const familyGroup = globalTokens[`${familyId}.${group}`] || {};
+        const specificProfileGroup = globalTokens[`${familyId}.${profileName}.${group}`] || {};
+
+        profileTokens[group] = {
+            ...globalGroup,
+            ...familyGroup,
+            ...specificProfileGroup
+        };
     }
 
     // Attach to variant for the binder to find it
@@ -377,6 +389,15 @@ async function composePage(layout, config) {
         } else {
             throw new Error(`❌ FAIL-FAST: Component "${sectionId}" required by Layout was not found at ${componentPath}`);
         }
+    }
+
+    // Inject Global Components (like cart-drawer) if they exist in base
+    const cartDrawerPath = path.join(TEMPLATES_DIR, 'base', 'components', 'cart-drawer.html');
+    if (await fs.pathExists(cartDrawerPath)) {
+        const cartContent = await fs.readFile(cartDrawerPath, 'utf-8');
+        skeleton = skeleton.replace('[[components.cart-drawer]]', cartContent);
+    } else {
+        skeleton = skeleton.replace('[[components.cart-drawer]]', '');
     }
 
     return skeleton.replace('{{COMPOSER_SECTIONS}}', sectionsHtml);
