@@ -231,6 +231,103 @@ app.use('/preview/:trialId/admin/', (req, res, next) => {
 });
 
 /**
+ * Payment Processing - Creates fresh order, deletes trial
+ */
+app.post('/api/payment/process', async (req, res) => {
+    try {
+        const { trialId, email, plan, amount, paymentId } = req.body;
+
+        console.log('\\n💳 Processing Payment...');
+        console.log(`   Trial: ${trialId}`);
+        console.log(`   Email: ${email}`);
+        console.log(`   Plan: ${plan}`);
+
+        // Validate trial exists
+        const registry = await loadRegistry();
+        const trial = registry.trials.find(t => t.id === trialId);
+
+        if (!trial) {
+            return res.status(404).json({ success: false, error: 'Trial not found' });
+        }
+
+        // Generate Order ID
+        const orderId = `ORD-${Date.now()}`;
+
+        // Create order directory
+        const ordersDir = path.join(__dirname, '../../payment/orders');
+        const orderPath = path.join(ordersDir, orderId);
+        await fs.ensureDir(orderPath);
+
+        // IMPORTANT: Copy from /generated (FRESH), NOT from trial!
+        console.log('   Generating fresh project...');
+
+        await fs.copy(
+            path.join(GENERATED_DIR, 'website'),
+            path.join(orderPath, 'website')
+        );
+
+        await fs.copy(
+            path.join(GENERATED_DIR, 'admin'),
+            path.join(orderPath, 'admin')
+        );
+
+        if (plan === 'premium') {
+            await fs.copy(
+                path.join(GENERATED_DIR, 'android'),
+                path.join(orderPath, 'android')
+            );
+        }
+
+        // Save order metadata
+        const orderMeta = {
+            orderId,
+            trialId,
+            email,
+            plan,
+            paymentId,
+            amount,
+            status: 'completed',
+            createdAt: new Date().toISOString()
+        };
+
+        await fs.writeFile(
+            path.join(orderPath, 'order.json'),
+            JSON.stringify(orderMeta, null, 2)
+        );
+
+        // Register order
+        const ordersRegistryPath = path.join(__dirname, '../../payment/orders-registry.json');
+        let ordersRegistry = { orders: [] };
+        if (await fs.pathExists(ordersRegistryPath)) {
+            ordersRegistry = JSON.parse(await fs.readFile(ordersRegistryPath, 'utf-8'));
+        }
+        ordersRegistry.orders.push(orderMeta);
+        await fs.writeFile(ordersRegistryPath, JSON.stringify(ordersRegistry, null, 2));
+
+        // DELETE Trial
+        console.log('   Deleting trial...');
+        const trialPath = path.join(TRIAL_DIR, trialId);
+        if (await fs.pathExists(trialPath)) {
+            await fs.remove(trialPath);
+        }
+        registry.trials = registry.trials.filter(t => t.id !== trialId);
+        await saveRegistry(registry);
+
+        console.log(`✅ Payment processed: ${orderId}`);
+
+        res.json({
+            success: true,
+            orderId,
+            message: 'Payment successful. Project ready for export.'
+        });
+
+    } catch (error) {
+        console.error('Payment error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+/**
  * Block dangerous endpoints
  */
 app.get('/api/export/*', (req, res) => {
@@ -293,6 +390,7 @@ app.get('/', async (req, res) => {
               <div class="trial-links">
                 <a href="/preview/${t.id}/" target="_blank">🌐 Website</a>
                 <a href="/preview/${t.id}/admin/login.html" target="_blank">📊 Admin</a>
+                <a href="#" onclick="buyProject('${t.id}', '${t.projectName}')" style="background: #22c55e;">💳 Buy & Own</a>
               </div>
             </div>
           `).join('')}
@@ -319,6 +417,38 @@ app.get('/', async (req, res) => {
             location.reload();
           } else {
             alert('Error: ' + data.error);
+          }
+        }
+        
+        async function buyProject(trialId, projectName) {
+          const email = prompt('Enter your email:', '');
+          if (!email) return;
+          
+          const plan = confirm('Premium includes Android app. Click OK for Premium ($199), Cancel for Basic ($99)') ? 'premium' : 'basic';
+          const amount = plan === 'premium' ? 199 : 99;
+          
+          if (!confirm('Confirm purchase: ' + projectName + ' (' + plan + ') for $' + amount + '?')) {
+            return;
+          }
+          
+          const res = await fetch('/api/payment/process', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              trialId,
+              email,
+              plan,
+              amount,
+              paymentId: 'SIM-' + Date.now()
+            })
+          });
+          
+          const data = await res.json();
+          if (data.success) {
+            alert('✅ Payment successful!\\n\\nOrder ID: ' + data.orderId + '\\n\\nYour project is ready for export.');
+            location.reload();
+          } else {
+            alert('❌ Payment failed: ' + data.error);
           }
         }
       </script>
