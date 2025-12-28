@@ -1,0 +1,17 @@
+{
+    "name": "@ahteam/shared",
+    "version": "0.1.0",
+    "description": "Shared utilities, types, and helpers",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "clean": "rimraf dist"
+    },
+    "devDependencies": {
+        "typescript": "^5.3.2"
+    },
+    "author": "AHteam",
+    "license": "UNLICENSED"
+}

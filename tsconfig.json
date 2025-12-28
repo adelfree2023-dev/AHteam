@@ -1,0 +1,57 @@
+{
+    "compilerOptions": {
+        // Strict Type Checking
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        // Additional Checks
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noPropertyAccessFromIndexSignature": true,
+        // Module Resolution
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        // Output
+        "target": "ES2022",
+        "module": "commonjs",
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        // Path Aliases
+        "baseUrl": ".",
+        "paths": {
+            "@ahteam/core-domain": [
+                "packages/core-domain/src"
+            ],
+            "@ahteam/tenant": [
+                "packages/tenant/src"
+            ],
+            "@ahteam/auth": [
+                "packages/auth/src"
+            ],
+            "@ahteam/shared": [
+                "packages/shared/src"
+            ]
+        },
+        // Other
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "coverage"
+    ]
+}

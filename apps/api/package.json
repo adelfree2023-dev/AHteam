@@ -1,0 +1,27 @@
+{
+    "name": "@ahteam/api",
+    "version": "0.1.0",
+    "description": "Newagant API - Backend Service",
+    "main": "dist/main.js",
+    "scripts": {
+        "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
+        "build": "tsc",
+        "start": "node dist/main.js",
+        "test": "jest",
+        "lint": "eslint src --ext .ts",
+        "clean": "rimraf dist"
+    },
+    "dependencies": {
+        "@ahteam/core-domain": "*",
+        "@ahteam/tenant": "*",
+        "@ahteam/auth": "*",
+        "@ahteam/shared": "*"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.0",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.3.2"
+    },
+    "author": "AHteam",
+    "license": "UNLICENSED"
+}

@@ -1,0 +1,21 @@
+{
+    "name": "@ahteam/auth",
+    "version": "0.1.0",
+    "description": "Authentication & Authorization Module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "clean": "rimraf dist"
+    },
+    "dependencies": {
+        "@ahteam/core-domain": "*",
+        "@ahteam/shared": "*"
+    },
+    "devDependencies": {
+        "typescript": "^5.3.2"
+    },
+    "author": "AHteam",
+    "license": "UNLICENSED"
+}
