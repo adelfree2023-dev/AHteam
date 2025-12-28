@@ -1,0 +1,17 @@
+{
+    "id": "products",
+    "name": "Product Grid",
+    "supportedVariants": [
+        "default",
+        "minimal",
+        "grid"
+    ],
+    "requiredProps": [
+        "_composed_data.products"
+    ],
+    "requiredTokens": [
+        "colors.primary",
+        "colors.surface",
+        "spacing.md"
+    ]
+}

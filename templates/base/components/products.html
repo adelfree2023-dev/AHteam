@@ -1,0 +1,77 @@
+<div class="products-grid container">
+    {{#each _composed_data.products}}
+    <div class="product-card" onclick="window.location.href='./product-{{id}}.html'">
+        <div class="product-image">
+            <img src="{{image}}" alt="{{name}}">
+        </div>
+        <div class="product-details">
+            <span class="product-category">{{category}}</span>
+            <h3 class="product-name">{{name}}</h3>
+            <p class="product-price">{{basePrice}} [[commerce.currency_symbol]]</p>
+            <button class="add-to-cart-btn">أضف للسلة</button>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<style>
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--spacing-lg);
+        padding: var(--spacing-xl) 0;
+    }
+
+    .product-card {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--global-border-color, #eee);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .product-details {
+        padding: var(--spacing-md);
+    }
+
+    .product-category {
+        font-size: 0.8rem;
+        color: var(--secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .product-name {
+        margin: var(--spacing-xs) 0;
+        font-size: 1.1rem;
+    }
+
+    .product-price {
+        font-weight: bold;
+        color: var(--primary);
+        font-size: 1.2rem;
+    }
+
+    .add-to-cart-btn {
+        width: 100%;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        padding: var(--spacing-sm);
+        border-radius: var(--radius-md);
+        margin-top: var(--spacing-sm);
+        cursor: pointer;
+    }
+</style>
