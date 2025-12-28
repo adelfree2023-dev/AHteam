@@ -1,0 +1,10 @@
+{
+    "id": "medical-info",
+    "name": "Medical Information Layout",
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "footer"
+    ]
+}

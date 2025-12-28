@@ -1,0 +1,10 @@
+{
+    "primary": "#005a9c",
+    "secondary": "#e6f3ff",
+    "accent": "#00a3e0",
+    "background": "#ffffff",
+    "text": "#333333",
+    "success": "#198754",
+    "warning": "#ffc107",
+    "error": "#dc3545"
+}

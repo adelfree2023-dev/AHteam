@@ -1,0 +1,13 @@
+{
+    "id": "medical-01",
+    "name": "Health First Medical Clinic",
+    "vertical": "medical",
+    "layout": "medical-info",
+    "tokenProfile": "medical",
+    "componentVariants": {
+        "header": "static",
+        "hero": "default",
+        "features": "default",
+        "footer": "compact"
+    }
+}

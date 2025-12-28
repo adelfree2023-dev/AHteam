@@ -1,0 +1,9 @@
+{
+    "id": "portfolio-minimal",
+    "name": "Minimalist Portfolio",
+    "sections": [
+        "header",
+        "featured-products",
+        "footer"
+    ]
+}

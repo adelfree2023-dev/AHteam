@@ -1,0 +1,11 @@
+{
+    "id": "minimal-store-01",
+    "name": "Pure Essentials",
+    "vertical": "fashion",
+    "layout": "ecommerce-landing",
+    "tokenProfile": "minimalist",
+    "componentVariants": {
+        "hero": "minimalist",
+        "featured-products": "grid"
+    }
+}

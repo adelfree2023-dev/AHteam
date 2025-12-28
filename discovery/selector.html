@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHteam - مستكشف الأنماط</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .template-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .template-card.active {
+            border-color: var(--primary);
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 180px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-right: 0.5rem;
+        }
+
+        .preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            flex-direction: column;
+            padding: 2rem;
+            z-index: 1000;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 8px;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>مستكشف الأنماط العالمية (Phase Q)</h1>
+        <p>اكتشف قوة التوليد الهندسي: عائلات التصميم المتعددة</p>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filter('all')">الكل</button>
+        <button class="filter-btn" onclick="filter('fashion')">أزياء</button>
+        <button class="filter-btn" onclick="filter('electronics')">إلكترونيات</button>
+        <button class="filter-btn" onclick="filter('medical')">طبي</button>
+        <button class="filter-btn" onclick="filter('portfolio')">بورتفوليو</button>
+    </div>
+
+    <div class="grid" id="templateGrid">
+        <!-- Cards injected via JS -->
+    </div>
+
+    <div class="preview-modal" id="previewModal">
+        <div class="modal-header">
+            <h2 id="modalTitle">معاينة القالب</h2>
+            <button class="close-btn" onclick="closePreview()">&times;</button>
+        </div>
+        <iframe id="previewFrame"></iframe>
+    </div>
+
+    <script>
+        const templates = [
+            { id: 'modern-01', name: 'Modern Elegance', style: 'Minimal', industry: 'fashion', icon: '👗' },
+            { id: 'electronics-pro', name: 'Luxury Electronics', style: 'Luxury', industry: 'electronics', icon: '🎧' },
+            { id: 'medical-01', name: 'Health First', style: 'Medical', industry: 'medical', icon: '🏥' },
+            { id: 'portfolio-01', name: 'Creative Studio', style: 'Dark', industry: 'portfolio', icon: '🎨' },
+            { id: 'vibrant-store-01', name: 'Vibrant Vibe', style: 'Bold', industry: 'fashion', icon: '⚡' },
+            { id: 'minimal-store-01', name: 'Pure Minimal', style: 'Clean', industry: 'fashion', icon: '✨' }
+        ];
+
+        function render(items) {
+            const grid = document.getElementById('templateGrid');
+            grid.innerHTML = items.map(t => `
+                <div class="template-card" onclick="openPreview('${t.id}', '${t.name}')">
+                    <div class="preview-img">${t.icon}</div>
+                    <div class="card-content">
+                        <h3>${t.name}</h3>
+                        <span class="badge">${t.style}</span>
+                        <span class="badge">${t.industry}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filter(industry) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const filtered = industry === 'all'
+                ? templates
+                : templates.filter(t => t.industry === industry);
+            render(filtered);
+        }
+
+        function openPreview(id, name) {
+            // Note: Since we push to git, the preview would normally be on the server.
+            // For now, it's a structural mockup of the UX.
+            alert('تم اختيار: ' + name + '\nسيتم فتح المعاينة فور رفعها على الخادم الرئيسي.');
+        }
+
+        render(templates);
+    </script>
+</body>
+
+</html>
