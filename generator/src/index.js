@@ -23,16 +23,25 @@ const ROOT_DIR = path.resolve(__dirname, '../..');
 const CONFIG_PATH = path.join(ROOT_DIR, 'project.config.json');
 const TEMPLATES_DIR = path.join(ROOT_DIR, 'templates');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'generated');
+const TOKENS_DIR = path.join(ROOT_DIR, 'tokens');
+
+let globalTokens = {};
 
 /**
  * Main generator function
  */
 async function generate() {
-    console.log('🏭 AHteam Generator v1.2.0\n');
-    console.log('================================\n');
+    console.log('🏭 AHteam Generator v2.0.0 (Inheritance Mode)\n');
+    console.log('===============================================\n');
 
-    // Load config
+    // 1. Load Tokens
+    await loadTokens();
+
+    // 2. Load config
     const config = JSON.parse(await fs.readFile(CONFIG_PATH, 'utf-8'));
+
+    // Inject tokens into config for binders to use
+    config._tokens = globalTokens;
 
     // Generate Website if enabled
     if (config.features?.website?.enabled) {
@@ -57,61 +66,15 @@ async function generate() {
 }
 
 /**
- * Generate Website
- */
-async function generateWebsite(config) {
-    const templatePath = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001');
-    const websiteOutput = path.join(OUTPUT_DIR, 'website');
-
-    // Validate
-    const validation = validate(CONFIG_PATH, templatePath);
-    if (!validation.valid) {
-        console.log('❌ Website validation failed');
-        return;
-    }
-
-    // Prepare output
-    await fs.ensureDir(websiteOutput);
-    await fs.emptyDir(websiteOutput);
-
-    // Copy and process pages
-    const pagesDir = path.join(templatePath, 'pages');
-    if (await fs.pathExists(pagesDir)) {
-        const pages = await fs.readdir(pagesDir);
-        for (const page of pages) {
-            const sourcePath = path.join(pagesDir, page);
-            const destPath = path.join(websiteOutput, page);
-            let content = await fs.readFile(sourcePath, 'utf-8');
-            content = processFile(content, config, page);
-            await fs.writeFile(destPath, content);
-            console.log(`   ✅ ${page}`);
-        }
-    }
-
-    // Copy assets
-    const assetsDir = path.join(templatePath, 'assets');
-    if (await fs.pathExists(assetsDir)) {
-        await copyAndProcessDir(assetsDir, path.join(websiteOutput, 'assets'), config);
-        console.log('   ✅ assets/');
-    }
-
-    // Copy data
-    const dataDir = path.join(templatePath, 'data');
-    if (await fs.pathExists(dataDir)) {
-        await fs.copy(dataDir, path.join(websiteOutput, 'data'));
-        console.log('   ✅ data/');
-    }
-
-    // Generate docs
-    await generateWebsiteDocs(config, websiteOutput);
-}
-
-/**
  * Generate Admin Panel
  */
 async function generateAdmin(config) {
-    const templatePath = path.join(TEMPLATES_DIR, 'admin', 'admin-basic-001');
+    const templateIdentifier = config.templates?.admin || 'admin/admin-basic-001';
+    const template = await resolveTemplate(templateIdentifier);
+    const templatePath = template._basePath;
     const adminOutput = path.join(OUTPUT_DIR, 'admin');
+
+    console.log(`   🎨 Using template: ${template.id || templateIdentifier}`);
 
     // Prepare output
     await fs.ensureDir(adminOutput);
@@ -229,8 +192,12 @@ npx serve -p 3001 .
  * Generate Android App
  */
 async function generateAndroid(config) {
-    const templatePath = path.join(TEMPLATES_DIR, 'android', 'android-webview-001');
+    const templateIdentifier = config.templates?.android || 'android/android-webview-001';
+    const template = await resolveTemplate(templateIdentifier);
+    const templatePath = template._basePath;
     const androidOutput = path.join(OUTPUT_DIR, 'android');
+
+    console.log(`   🎨 Using template: ${template.id || templateIdentifier}`);
 
     // Prepare output
     await fs.ensureDir(androidOutput);
@@ -267,6 +234,288 @@ async function generateAndroidDocs(config, outputPath) {
 `;
     await fs.writeFile(path.join(outputPath, 'README.md'), readme);
     console.log('   ✅ README.md');
+}
+
+/**
+ * Load Design Tokens from global tokens directory
+ */
+async function loadTokens() {
+    if (!(await fs.pathExists(TOKENS_DIR))) return;
+    const files = await fs.readdir(TOKENS_DIR);
+    for (const file of files) {
+        if (file.endsWith('.json')) {
+            const filePath = path.join(TOKENS_DIR, file);
+            const key = file.replace('.json', '');
+            globalTokens[key] = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+        }
+    }
+    console.log('💎 Tokens Loaded:', Object.keys(globalTokens).join(', '));
+}
+
+/**
+ * Resolve Token (e.g. "colors.primary" -> "#3b82f6")
+ */
+function resolveToken(tokenPath) {
+    if (!tokenPath || typeof tokenPath !== 'string') return tokenPath;
+    const parts = tokenPath.split('.');
+    if (parts.length !== 2) return tokenPath;
+
+    const [group, key] = parts;
+    return globalTokens[group]?.[key] || tokenPath;
+}
+
+/**
+ * Resolve a variant with its Layout and Tokens
+ */
+async function resolveVariant(variantName) {
+    const variantPath = path.join(TEMPLATES_DIR, 'variants', `${variantName}.json`);
+    if (!(await fs.pathExists(variantPath))) {
+        throw new Error(`Variant not found: ${variantName}`);
+    }
+    const variant = JSON.parse(await fs.readFile(variantPath, 'utf-8'));
+
+    // Resolve Layout
+    const layoutPath = path.join(TEMPLATES_DIR, 'layouts', `${variant.layout}.json`);
+    if (!(await fs.pathExists(layoutPath))) {
+        throw new Error(`Layout not found: ${variant.layout}`);
+    }
+    const layout = JSON.parse(await fs.readFile(layoutPath, 'utf-8'));
+
+    return { variant, layout };
+}
+
+/**
+ * Compose a page from Components and Layout
+ */
+async function composePage(layout, config) {
+    const skeletonPath = path.join(TEMPLATES_DIR, 'base', 'skeleton.html');
+    let skeleton = await fs.readFile(skeletonPath, 'utf-8');
+
+    let sectionsHtml = '';
+    for (const sectionId of layout.sections) {
+        const componentPath = path.join(TEMPLATES_DIR, 'base', 'components', `${sectionId}.html`);
+        if (await fs.pathExists(componentPath)) {
+            const compContent = await fs.readFile(componentPath, 'utf-8');
+            sectionsHtml += `\n<!-- Section: ${sectionId} -->\n${compContent}\n`;
+        } else {
+            console.log(`⚠️ Component not found: ${sectionId}`);
+        }
+    }
+
+    return skeleton.replace('{{COMPOSER_SECTIONS}}', sectionsHtml);
+}
+
+/**
+ * 🔒 Step 4.5 - Variant Contract Validation
+ * Validates that the variant correctly implements component requirements.
+ */
+async function validateVariantContract(variant, layout) {
+    console.log('   🔒 Validating Variant Contract...');
+
+    // 1. Check Component Variants match Base Manifests
+    const componentVariants = variant.componentVariants || {};
+    for (const sectionId of layout.sections) {
+        const manifestPath = path.join(TEMPLATES_DIR, 'base', 'components', `${sectionId}.component.json`);
+
+        if (await fs.pathExists(manifestPath)) {
+            const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf-8'));
+            const selectedVariant = componentVariants[sectionId];
+
+            if (selectedVariant && !manifest.supportedVariants.includes(selectedVariant)) {
+                throw new Error(`Invalid Variant: Component "${sectionId}" does not support variant "${selectedVariant}". Supported: ${manifest.supportedVariants.join(', ')}`);
+            }
+        }
+    }
+
+    // 2. Token Integrity Check (will be handled by binder but fail-fast here)
+    if (variant.tokens) {
+        for (const [key, tokenValue] of Object.entries(variant.tokens)) {
+            if (tokenValue.includes('.')) {
+                const [group, tKey] = tokenValue.split('.');
+                if (!globalTokens[group] || !globalTokens[group][tKey]) {
+                    throw new Error(`Invalid Token: Reference "${tokenValue}" for "${key}" not found in global tokens.`);
+                }
+            }
+        }
+    }
+
+    console.log('   ✅ Contract Validated');
+}
+
+/**
+ * Generate a Search Index for the store
+ */
+async function generateSearchIndex(products, outputPath) {
+    console.log('   🔍 Generating Search Index...');
+    const index = products.map(p => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        tags: p.tags || [],
+        price: p.price,
+        attributes: p.attributes || {}
+    }));
+
+    const dataDir = path.join(outputPath, 'data');
+    await fs.ensureDir(dataDir);
+    await fs.writeFile(path.join(dataDir, 'search-index.json'), JSON.stringify(index, null, 2));
+    console.log('   ✅ search-index.json generated');
+}
+
+/**
+ * Generate Dynamic Product Pages
+ */
+async function generateDynamicPages(products, layoutName, config, outputPath) {
+    console.log(`   📄 Generating Dynamic Pages for ${products.length} products...`);
+
+    // Resolve Product Layout
+    const layoutPath = path.join(TEMPLATES_DIR, 'layouts', `${layoutName}.json`);
+    if (!(await fs.pathExists(layoutPath))) {
+        console.log(`   ⚠️ Layout not found: ${layoutName}, skipping dynamic pages.`);
+        return;
+    }
+    const layout = JSON.parse(await fs.readFile(layoutPath, 'utf-8'));
+
+    for (const product of products) {
+        // Create a local config copy with the current product context
+        const pageConfig = {
+            ...config,
+            _current_product: product,
+            _current_product_json: JSON.stringify(product),
+            _current_product_attributes: Object.entries(product.attributes || {})
+                .map(([k, v]) => `<div class="attribute-item"><strong>${k}:</strong> ${Array.isArray(v) ? v.join(', ') : v}</div>`)
+                .join('')
+        };
+
+        const composedHtml = await composePage(layout, pageConfig);
+        const finalHtml = processFile(composedHtml, pageConfig, `product-${product.id}.html`);
+
+        await fs.writeFile(path.join(outputPath, `product-${product.id}.html`), finalHtml);
+        console.log(`   ✅ Page: product-${product.id}.html`);
+    }
+}
+
+/**
+ * Generate Custom Pages defined in the Variant
+ */
+async function generateCustomPages(pages, config, outputPath) {
+    if (!pages) return;
+    console.log(`   📄 Generating ${Object.keys(pages).length} custom pages...`);
+
+    for (const [pageSlug, pageDef] of Object.entries(pages)) {
+        // Resolve Layout
+        const layoutPath = path.join(TEMPLATES_DIR, 'layouts', `${pageDef.layout}.json`);
+        if (!(await fs.pathExists(layoutPath))) {
+            console.log(`   ⚠️ Layout not found for custom page: ${pageDef.layout}`);
+            continue;
+        }
+
+        const layout = JSON.parse(await fs.readFile(layoutPath, 'utf-8'));
+
+        // If the page definition overrides sections
+        if (pageDef.sections) {
+            layout.sections = pageDef.sections;
+        }
+
+        const composedHtml = await composePage(layout, config);
+        const finalHtml = processFile(composedHtml, config, `${pageSlug}.html`);
+        await fs.writeFile(path.join(outputPath, `${pageSlug}.html`), finalHtml);
+        console.log(`   ✅ Page: ${pageSlug}.html`);
+    }
+}
+
+/**
+ * Update generateWebsite to use Composer Pipeline with Global Commerce features
+ */
+async function generateWebsite(config) {
+    const variantName = config.features?.website?.template_variant || 'modern-01';
+    console.log(`   🎹 Composing Website via Variant: ${variantName}`);
+
+    const { variant, layout } = await resolveVariant(variantName);
+
+    // 🔒 Step 4.5 - Validation Gate
+    await validateVariantContract(variant, layout);
+
+    const websiteOutput = path.join(OUTPUT_DIR, 'website');
+    await fs.ensureDir(websiteOutput);
+    await fs.emptyDir(websiteOutput);
+
+    // 1. Data Selection (Verticals)
+    let products = [];
+    const vertical = variant.vertical || 'default';
+    const dataPath = path.join(TEMPLATES_DIR, 'base', 'data', `${vertical}.json`);
+
+    if (await fs.pathExists(dataPath)) {
+        console.log(`   📦 Loading Vertical Data: ${vertical}`);
+        products = JSON.parse(await fs.readFile(dataPath, 'utf-8'));
+    } else {
+        const legacyData = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001', 'data', 'products.json');
+        if (await fs.pathExists(legacyData)) {
+            products = JSON.parse(await fs.readFile(legacyData, 'utf-8'));
+        }
+    }
+
+    // Inject products into config for composition
+    config._composed_data = { products };
+
+    // 2. Compose the Landing Page (index.html)
+    const composedHtml = await composePage(layout, config);
+    const finalHtml = processFile(composedHtml, config, 'index.html');
+    await fs.writeFile(path.join(websiteOutput, 'index.html'), finalHtml);
+    console.log('   ✅ Composer: index.html generated');
+
+    // 3. Dynamic Pages (Product Details)
+    const productLayout = variant.productLayout || 'ecommerce-product';
+    await generateDynamicPages(products, productLayout, config, websiteOutput);
+
+    // 4. Custom Pages (Static)
+    await generateCustomPages(variant.pages, config, websiteOutput);
+
+    // 5. Search Index Generation
+    if (variant.features?.search) {
+        await generateSearchIndex(products, websiteOutput);
+    }
+
+    // 5. Data Sync
+    const dataDir = path.join(websiteOutput, 'data');
+    await fs.ensureDir(dataDir);
+    await fs.writeFile(path.join(dataDir, 'products.json'), JSON.stringify(products, null, 2));
+
+    // 6. Copy shared assets
+    const legacyAssets = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001', 'assets');
+    if (await fs.pathExists(legacyAssets)) {
+        await copyAndProcessDir(legacyAssets, path.join(websiteOutput, 'assets'), config);
+    }
+}
+
+/**
+ * Resolve a template with Inheritance
+ */
+async function resolveTemplate(templateIdentifier) {
+    // If it's a file path to a variant JSON
+    if (templateIdentifier.endsWith('.json')) {
+        const variantPath = path.join(TEMPLATES_DIR, templateIdentifier);
+        const variant = JSON.parse(await fs.readFile(variantPath, 'utf-8'));
+
+        if (variant.inheritsFrom) {
+            const basePath = path.join(TEMPLATES_DIR, variant.inheritsFrom);
+            const baseManifestPath = path.join(basePath, 'manifest.json');
+            const base = JSON.parse(await fs.readFile(baseManifestPath, 'utf-8'));
+
+            // Merge base and variant
+            return {
+                ...base,
+                ...variant,
+                tokens: { ...base.tokens, ...variant.tokens },
+                overrides: { ...base.overrides, ...variant.overrides },
+                _basePath: basePath
+            };
+        }
+        return variant;
+    }
+
+    // Default legacy behavior
+    return { _basePath: path.join(TEMPLATES_DIR, templateIdentifier) };
 }
 
 // Run generator

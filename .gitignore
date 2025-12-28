@@ -47,6 +47,11 @@ Thumbs.db
 # Docker
 .docker/
 
+# AHteam Specific
+generated/
+generator/package-lock.json
+*.md.tmp
+
 # Secrets - NEVER COMMIT
 *.pem
 *.key

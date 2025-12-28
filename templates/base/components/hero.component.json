@@ -1,0 +1,9 @@
+{
+    "id": "hero",
+    "name": "Hero Section",
+    "supportedVariants": [
+        "split",
+        "centered",
+        "minimalist"
+    ]
+}

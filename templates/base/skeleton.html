@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{meta.seo.title}} | {{project.name}}</title>
+    <meta name="description" content="{{meta.seo.description}}">
+
+    <!-- Token-based Styles -->
+    <style>
+        :root {
+            --primary: [[colors.primary]];
+            --secondary: [[colors.secondary]];
+            --accent: [[colors.accent]];
+            --background: [[colors.background]];
+            --surface: [[colors.surface]];
+            --text: [[colors.text]];
+            --text-muted: [[colors.text_muted]];
+
+            --font-heading: '[[fonts.heading]]', sans-serif;
+            --font-body: '[[fonts.body]]', sans-serif;
+
+            --spacing-xs: [[spacing.xs]];
+            --spacing-sm: [[spacing.sm]];
+            --spacing-md: [[spacing.md]];
+            --spacing-lg: [[spacing.lg]];
+            --spacing-xl: [[spacing.xl]];
+
+            --radius-md: [[radius.md]];
+            --shadow-md: [[shadows.md]];
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--background);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Utility styles for the skeleton */
+        section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-heading);
+        }
+    </style>
+
+    <!-- Legacy Assets Link (Optional for transitions) -->
+    <link rel="stylesheet" href="./assets/css/base.css">
+</head>
+
+<body>
+    [[components.cart-drawer]]
+    {{COMPOSER_SECTIONS}}
+
+    <script src="./assets/js/commerce-engine.js"></script>
+    <script src="./assets/js/search.js"></script>
+    <script src="./assets/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{
+    "id": "electronics-pro",
+    "name": "Pro Electronics Store",
+    "vertical": "electronics",
+    "layout": "ecommerce-landing",
+    "tokens": {
+        "primary": "colors.accent",
+        "background": "colors.secondary",
+        "text": "colors.text"
+    },
+    "componentVariants": {
+        "hero": "minimalist",
+        "header": "fixed"
+    },
+    "features": {
+        "search": true,
+        "filters": true
+    },
+    "pages": {
+        "about": {
+            "layout": "ecommerce-landing",
+            "sections": [
+                "header",
+                "features",
+                "footer"
+            ]
+        },
+        "contact": {
+            "layout": "ecommerce-landing",
+            "sections": [
+                "header",
+                "footer"
+            ]
+        }
+    }
+}

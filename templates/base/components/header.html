@@ -1,0 +1,42 @@
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="{{branding.logo.primary}}" alt="{{business.name}}">
+        </a>
+        <nav class="main-nav" id="mainNav">
+            <a href="/">الرئيسية</a>
+            <a href="/products.html">المنتجات</a>
+            <a href="/about.html">من نحن</a>
+            <a href="/contact.html">تواصل معنا</a>
+        </nav>
+        <div class="header-actions">
+            <button class="cart-btn" id="headerCartBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cartCount" class="cart-count">0</span>
+            </button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartBtn = document.getElementById('headerCartBtn');
+        const cartCount = document.getElementById('cartCount');
+
+        cartBtn.onclick = () => window.dispatchEvent(new CustomEvent('open-cart'));
+
+        AHCommerce.onUpdate((cart) => {
+            cartCount.innerText = AHCommerce.getCartCount();
+        });
+        cartCount.innerText = AHCommerce.getCartCount();
+    });
+</script>

@@ -1,0 +1,125 @@
+<section class="product-info-section container">
+    <div class="product-info-grid">
+        <div class="product-gallery">
+            <img src="{{_current_product.image}}" alt="{{_current_product.name}}" class="main-image">
+        </div>
+        <div class="product-details">
+            <h1 class="product-name">{{_current_product.name}}</h1>
+            <p class="product-category">{{_current_product.category}}</p>
+            <div class="product-price">
+                <span class="amount">{{_current_product.price}}</span>
+                <span class="symbol">[[commerce.currency_symbol]]</span>
+            </div>
+
+            <div class="product-attributes">
+                <!-- Attributes will be rendered here -->
+                {{_current_product_attributes}}
+            </div>
+
+            <div class="product-actions">
+                <button class="btn btn-primary btn-large" id="addToCartBtn">أضف للسلة</button>
+                <div id="stockStatus" class="stock-status">جاري التحقق من المخزون...</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .stock-status {
+        margin-top: var(--spacing-sm);
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .stock-status.in-stock {
+        color: var(--success);
+    }
+
+    .stock-status.out-of-stock {
+        color: var(--error);
+    }
+
+    .product-info-section {
+        padding: var(--spacing-xl) 0;
+    }
+
+    .product-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .main-image {
+        width: 100%;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+    }
+
+    .product-name {
+        font-size: 2.5rem;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .product-category {
+        color: var(--text-muted);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .product-price {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .product-attributes {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .attribute-item {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .attribute-item strong {
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .btn-large {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+        .product-info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const product = [[_current_product_json]];
+        const addBtn = document.getElementById('addToCartBtn');
+        const stockDiv = document.getElementById('stockStatus');
+
+        // Add to Cart
+        addBtn.onclick = () => {
+            AHCommerce.addItem(product);
+            window.dispatchEvent(new CustomEvent('open-cart'));
+        };
+
+        // Check Stock
+        const stock = await AHCommerce.checkStock(product.id);
+        if (stock && !stock.inStock) {
+            addBtn.disabled = true;
+            addBtn.innerText = 'غير متوفر';
+            stockDiv.innerText = 'عذراً، هذا المنتج غير متوفر حالياً';
+            stockDiv.classList.add('out-of-stock');
+        } else {
+            stockDiv.innerText = 'متوفر في المخزون';
+            stockDiv.classList.add('in-stock');
+        }
+    });
+</script>

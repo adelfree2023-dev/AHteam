@@ -1,0 +1,7 @@
+{
+    "id": "cart-drawer",
+    "name": "Shopping Cart Drawer",
+    "supportedVariants": [
+        "default"
+    ]
+}

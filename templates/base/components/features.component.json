@@ -1,0 +1,8 @@
+{
+    "id": "features",
+    "name": "Features Icons",
+    "supportedVariants": [
+        "grid",
+        "list"
+    ]
+}

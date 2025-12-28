@@ -1,0 +1,14 @@
+{
+    "id": "faulty-variant",
+    "name": "Faulty Token Test",
+    "layout": "ecommerce-landing",
+    "tokens": {
+        "primary": "colors.nonexistent",
+        "background": "colors.background",
+        "text": "colors.text"
+    },
+    "componentVariants": {
+        "hero": "split",
+        "header": "sticky"
+    }
+}

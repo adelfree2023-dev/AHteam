@@ -1,0 +1,8 @@
+{
+    "id": "featured-products",
+    "name": "Featured Products Grid",
+    "supportedVariants": [
+        "grid",
+        "slider"
+    ]
+}

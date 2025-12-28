@@ -1,0 +1,69 @@
+{
+    "$description": "Data bindings for web-ecommerce-001 - Direct mapping only, NO LOGIC",
+    "global": {
+        "siteName": "{{project.name}}",
+        "siteSlug": "{{project.slug}}",
+        "logo": "{{branding.logo.primary}}",
+        "favicon": "{{branding.logo.favicon}}",
+        "primaryColor": "{{branding.colors.primary}}",
+        "secondaryColor": "{{branding.colors.secondary}}",
+        "accentColor": "{{branding.colors.accent}}",
+        "backgroundColor": "{{branding.colors.background}}",
+        "textColor": "{{branding.colors.text}}",
+        "successColor": "{{branding.colors.success}}",
+        "warningColor": "{{branding.colors.warning}}",
+        "errorColor": "{{branding.colors.error}}",
+        "primaryFont": "{{branding.fonts.primary}}",
+        "secondaryFont": "{{branding.fonts.secondary}}",
+        "language": "{{localization.defaultLanguage}}",
+        "direction": "{{localization.direction[localization.defaultLanguage]}}"
+    },
+    "header": {
+        "logo": "{{branding.logo.primary}}",
+        "businessName": "{{business.name}}"
+    },
+    "hero": {
+        "title": "{{content.homepage.hero.title}}",
+        "subtitle": "{{content.homepage.hero.subtitle}}",
+        "cta": "{{content.homepage.hero.cta}}",
+        "image": "{{content.homepage.hero.image}}"
+    },
+    "footer": {
+        "copyright": "{{content.footer.copyright}}",
+        "email": "{{business.email}}",
+        "phone": "{{business.phone}}",
+        "whatsapp": "{{business.whatsapp}}",
+        "facebook": "{{business.social.facebook}}",
+        "instagram": "{{business.social.instagram}}",
+        "twitter": "{{business.social.twitter}}"
+    },
+    "about": {
+        "title": "{{content.about.title}}",
+        "description": "{{content.about.description}}",
+        "mission": "{{content.about.mission}}",
+        "vision": "{{content.about.vision}}"
+    },
+    "contact": {
+        "title": "{{content.contact.title}}",
+        "description": "{{content.contact.description}}",
+        "email": "{{business.email}}",
+        "phone": "{{business.phone}}",
+        "whatsapp": "{{business.whatsapp}}",
+        "address": {
+            "street": "{{business.address.street}}",
+            "city": "{{business.address.city}}",
+            "country": "{{business.address.country}}"
+        }
+    },
+    "currency": {
+        "code": "{{business.currency.code}}",
+        "symbol": "{{business.currency.symbol}}",
+        "position": "{{business.currency.position}}"
+    },
+    "seo": {
+        "title": "{{meta.seo.title}}",
+        "description": "{{meta.seo.description}}",
+        "keywords": "{{meta.seo.keywords}}",
+        "ogImage": "{{meta.seo.ogImage}}"
+    }
+}

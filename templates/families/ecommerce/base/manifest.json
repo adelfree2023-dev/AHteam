@@ -1,0 +1,46 @@
+{
+    "$schema": "../../template.manifest.schema.json",
+    "id": "web-ecommerce-001",
+    "name": "Modern E-Commerce Template",
+    "description": "قالب متجر إلكتروني حديث مع دعم RTL",
+    "type": "website",
+    "category": "ecommerce",
+    "version": "1.0.0",
+    "author": "AHteam",
+    "createdAt": "2025-12-28",
+    "supports": {
+        "rtl": true,
+        "languages": [
+            "ar",
+            "en"
+        ],
+        "darkMode": true,
+        "responsive": true,
+        "features": [
+            "productGrid",
+            "productDetail",
+            "cart",
+            "checkout",
+            "contactForm",
+            "whatsappChat",
+            "socialLinks"
+        ]
+    },
+    "preview": "assets/preview.png",
+    "screenshots": [
+        "assets/screenshots/home.png",
+        "assets/screenshots/products.png",
+        "assets/screenshots/cart.png"
+    ],
+    "pages": [
+        "home",
+        "products",
+        "product-detail",
+        "cart",
+        "checkout",
+        "about",
+        "contact",
+        "terms",
+        "privacy"
+    ]
+}

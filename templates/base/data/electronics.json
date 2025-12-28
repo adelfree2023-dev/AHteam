@@ -1,0 +1,29 @@
+[
+    {
+        "id": "e001",
+        "name": "سماعات لاسلكية برو",
+        "price": 1200,
+        "category": "إلكترونيات",
+        "image": "./assets/images/products/headphones-1.jpg",
+        "attributes": {
+            "battery": "24 ساعة",
+            "connection": "Bluetooth 5.2",
+            "warranty": "عام واحد"
+        }
+    },
+    {
+        "id": "e002",
+        "name": "شاحن سريع 65 وات",
+        "price": 450,
+        "category": "إكسسوارات",
+        "image": "./assets/images/products/charger-1.jpg",
+        "attributes": {
+            "power": "65W",
+            "ports": [
+                "USB-C",
+                "USB-A"
+            ],
+            "protection": "دعم الشحن الآمن"
+        }
+    }
+]

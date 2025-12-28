@@ -1,0 +1,8 @@
+{
+    "id": "footer",
+    "name": "Global Footer",
+    "supportedVariants": [
+        "detailed",
+        "minimal"
+    ]
+}

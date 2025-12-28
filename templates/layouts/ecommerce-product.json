@@ -1,0 +1,10 @@
+{
+    "id": "ecommerce-product",
+    "name": "Product Detail Page",
+    "sections": [
+        "header",
+        "product-info",
+        "featured-products",
+        "footer"
+    ]
+}

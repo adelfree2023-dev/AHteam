@@ -1,0 +1,41 @@
+[
+    {
+        "id": "f001",
+        "name": "قميص قطني كلاسيك",
+        "price": 350,
+        "category": "ملابس رجالي",
+        "image": "./assets/images/products/shirt-1.jpg",
+        "attributes": {
+            "sizes": [
+                "S",
+                "M",
+                "L",
+                "XL"
+            ],
+            "colors": [
+                "أزرق",
+                "أبيض",
+                "أسود"
+            ],
+            "material": "قطن 100%"
+        }
+    },
+    {
+        "id": "f002",
+        "name": "فستان صيفي مشجر",
+        "price": 600,
+        "category": "ملابس حريمي",
+        "image": "./assets/images/products/dress-1.jpg",
+        "attributes": {
+            "sizes": [
+                "M",
+                "L"
+            ],
+            "colors": [
+                "أحمر",
+                "أصفر"
+            ],
+            "material": "شيفون"
+        }
+    }
+]

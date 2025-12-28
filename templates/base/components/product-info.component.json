@@ -1,0 +1,9 @@
+{
+    "id": "product-info",
+    "name": "Product Details Display",
+    "supportedVariants": [
+        "default",
+        "compact",
+        "gallery"
+    ]
+}

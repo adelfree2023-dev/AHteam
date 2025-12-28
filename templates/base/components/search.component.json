@@ -1,0 +1,8 @@
+{
+    "id": "search",
+    "name": "Smart Search Bar",
+    "supportedVariants": [
+        "default",
+        "floating"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "id": "header",
+    "name": "Global Header",
+    "supportedVariants": [
+        "sticky",
+        "fixed",
+        "static"
+    ]
+}

@@ -1,0 +1,60 @@
+{
+    "$schema": "../../template.rules.schema.json",
+    "$description": "Governance rules for web-ecommerce-001",
+    "version": "1.0.0",
+    "forbidden": [
+        "externalApiCalls",
+        "backendDependencies",
+        "hardcodedColors",
+        "hardcodedText",
+        "hardcodedUrls",
+        "authDependencies",
+        "secretsOrKeys",
+        "mandatoryAnalytics",
+        "thirdPartyTracking",
+        "serverSideRendering",
+        "databaseConnections"
+    ],
+    "allowed": [
+        "readProjectConfig",
+        "localAssets",
+        "staticUI",
+        "configBasedBehavior",
+        "responsiveDesign",
+        "rtlSupport",
+        "darkModeToggle",
+        "clientSideInteraction",
+        "formSubmission",
+        "localStorageUsage"
+    ],
+    "assets": {
+        "maxImageSize": "500KB",
+        "allowedFormats": [
+            "png",
+            "jpg",
+            "jpeg",
+            "webp",
+            "svg"
+        ],
+        "maxFontSize": "200KB",
+        "allowedFontFormats": [
+            "woff",
+            "woff2",
+            "ttf"
+        ]
+    },
+    "performance": {
+        "maxBundleSize": "500KB",
+        "lazyLoading": true,
+        "minification": true
+    },
+    "accessibility": {
+        "semanticHTML": true,
+        "altTexts": true,
+        "keyboardNavigation": true,
+        "ariaLabels": true
+    },
+    "exportable": true,
+    "standalone": true,
+    "offlineCapable": false
+}

@@ -16,7 +16,7 @@ import { getValueByPath } from './validator.js';
  * Token format: {{path.to.value}}
  */
 export function findTokens(content) {
-    const tokenRegex = /\{\{([^}]+)\}\}/g;
+    const tokenRegex = /\{\{([\s\S]+?)\}\}/g;
     const tokens = [];
     let match;
 
@@ -24,6 +24,24 @@ export function findTokens(content) {
         tokens.push({
             full: match[0],      // {{branding.colors.primary}}
             path: match[1].trim() // branding.colors.primary
+        });
+    }
+
+    return tokens;
+}
+
+/**
+ * Find Design Tokens [[group.key]]
+ */
+export function findDesignTokens(content) {
+    const tokenRegex = /\[\[([\s\S]+?)\]\]/g;
+    const tokens = [];
+    let match;
+
+    while ((match = tokenRegex.exec(content)) !== null) {
+        tokens.push({
+            full: match[0],
+            path: match[1].trim()
         });
     }
 
@@ -60,17 +78,53 @@ export function bindData(content, config) {
 }
 
 /**
+ * Bind Design Tokens [[group.key]] from config._tokens
+ */
+export function bindDesignTokens(content, tokens, config) {
+    if (!tokens) return content;
+    const dTokens = findDesignTokens(content);
+    let result = content;
+
+    for (const token of dTokens) {
+        let value;
+        const parts = token.path.split('.');
+
+        // 1. Try Design Tokens
+        if (parts.length === 2) {
+            const [group, key] = parts;
+            value = tokens[group]?.[key];
+        }
+
+        // 2. Fallback to Config Data (if not found in design tokens)
+        if (value === undefined || value === null) {
+            value = getValueByPath(config, token.path);
+        }
+
+        if (value !== undefined && value !== null) {
+            const stringValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
+            result = result.replace(new RegExp(token.full.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), stringValue);
+        }
+    }
+
+    return result;
+}
+
+/**
  * Process a single file
  */
 export function processFile(content, config, filePath) {
-    const result = bindData(content, config);
+    // 1. Bind Config Data {{...}}
+    const bindResult = bindData(content, config);
 
-    if (result.unboundTokens.length > 0) {
+    // 2. Bind Design Tokens [[...]]
+    let finalContent = bindDesignTokens(bindResult.content, config._tokens, config);
+
+    if (bindResult.unboundTokens.length > 0) {
         console.log(`⚠️  Unbound tokens in ${filePath}:`);
-        result.unboundTokens.forEach(t => console.log(`   - {{${t}}}`));
+        bindResult.unboundTokens.forEach(t => console.log(`   - {{${t}}}`));
     }
 
-    return result.content;
+    return finalContent;
 }
 
 /**

@@ -1,0 +1,7 @@
+{
+    "currency_symbol": "EGP",
+    "currency_code": "EGP",
+    "language": "ar",
+    "direction": "rtl",
+    "baseUrl": "http://localhost:3005"
+}

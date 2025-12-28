@@ -1,0 +1,12 @@
+{
+    "id": "ecommerce-landing",
+    "name": "E-commerce Landing Page",
+    "sections": [
+        "header",
+        "search",
+        "hero",
+        "featured-products",
+        "features",
+        "footer"
+    ]
+}
