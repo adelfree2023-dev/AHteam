@@ -1,0 +1,70 @@
+{
+    "$schema": "../../template.schema.schema.json",
+    "$description": "Configuration requirements for web-ecommerce-001",
+    "required": [
+        "project.name",
+        "project.slug",
+        "branding.logo.primary",
+        "branding.colors.primary",
+        "branding.colors.secondary",
+        "branding.colors.accent",
+        "branding.colors.background",
+        "branding.colors.text",
+        "branding.fonts.primary",
+        "business.name",
+        "business.email",
+        "business.currency.code",
+        "business.currency.symbol",
+        "content.homepage.hero.title",
+        "content.homepage.hero.subtitle",
+        "content.homepage.hero.cta",
+        "content.footer.copyright",
+        "localization.defaultLanguage",
+        "localization.supportedLanguages"
+    ],
+    "optional": [
+        "branding.logo.secondary",
+        "branding.logo.favicon",
+        "branding.colors.success",
+        "branding.colors.warning",
+        "branding.colors.error",
+        "branding.fonts.secondary",
+        "business.phone",
+        "business.whatsapp",
+        "business.address",
+        "business.social.facebook",
+        "business.social.instagram",
+        "business.social.twitter",
+        "content.homepage.hero.image",
+        "content.homepage.sections",
+        "content.about.title",
+        "content.about.description",
+        "content.about.mission",
+        "content.about.vision",
+        "content.contact.title",
+        "content.contact.description",
+        "content.policies.terms",
+        "content.policies.privacy",
+        "content.policies.refund",
+        "content.policies.shipping",
+        "content.footer.links",
+        "features.integrations.analytics.googleAnalyticsId",
+        "meta.seo.title",
+        "meta.seo.description",
+        "meta.seo.keywords",
+        "meta.seo.ogImage"
+    ],
+    "validation": {
+        "branding.colors.*": "^#[0-9a-fA-F]{6}$",
+        "business.email": "email",
+        "business.currency.code": "^[A-Z]{3}$",
+        "localization.defaultLanguage": [
+            "ar",
+            "en"
+        ],
+        "localization.supportedLanguages": [
+            "ar",
+            "en"
+        ]
+    }
+}

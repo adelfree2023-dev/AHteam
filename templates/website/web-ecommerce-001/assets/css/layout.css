@@ -1,0 +1,110 @@
+/**
+ * ============================================
+ * AHteam - web-ecommerce-001
+ * Layout Styles
+ * ============================================
+ */
+
+/* Page Layout */
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-main {
+    flex: 1;
+}
+
+/* Section */
+.section {
+    padding: var(--spacing-2xl) 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Grid Layouts */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+}
+
+/* Sidebar Layout */
+.layout-sidebar {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-xl);
+}
+
+[dir="rtl"] .layout-sidebar {
+    grid-template-columns: 1fr 280px;
+}
+
+.sidebar {
+    background-color: var(--color-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+/* Checkout Layout */
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--spacing-xl);
+}
+
+[dir="rtl"] .checkout-layout {
+    grid-template-columns: 400px 1fr;
+}
+
+.checkout-form {
+    background-color: var(--color-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-secondary);
+}
+
+.order-summary {
+    background-color: var(--color-secondary);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+/* Form Layout */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
