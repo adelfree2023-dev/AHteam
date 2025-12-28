@@ -2,7 +2,15 @@
     "id": "footer",
     "name": "Global Footer",
     "supportedVariants": [
-        "detailed",
-        "minimal"
+        "default",
+        "compact"
+    ],
+    "requiredProps": [
+        "content.footer.copyright",
+        "business.email"
+    ],
+    "requiredTokens": [
+        "colors.background",
+        "colors.text"
     ]
 }

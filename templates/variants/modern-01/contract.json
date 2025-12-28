@@ -1,0 +1,18 @@
+{
+    "id": "modern-01",
+    "name": "Modern Elegance",
+    "vertical": "fashion",
+    "layout": "ecommerce-landing",
+    "tokenProfile": "global.default",
+    "componentVariants": {
+        "header": "default",
+        "hero": "default",
+        "featured-products": "default",
+        "features": "default",
+        "footer": "default"
+    },
+    "features": {
+        "search": true,
+        "filters": true
+    }
+}

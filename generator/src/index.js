@@ -12,7 +12,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { validate } from './validator.js';
+import { validate, getValueByPath } from './validator.js';
 import { processFile, shouldProcessFile } from './binder.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -239,16 +239,27 @@ async function generateAndroidDocs(config, outputPath) {
 /**
  * Load Design Tokens from global tokens directory
  */
+/**
+ * Load all tokens recursively from the tokens directory
+ * Resulting keys are namespaced: "namespace.filename"
+ */
 async function loadTokens() {
     if (!(await fs.pathExists(TOKENS_DIR))) return;
-    const files = await fs.readdir(TOKENS_DIR);
-    for (const file of files) {
-        if (file.endsWith('.json')) {
-            const filePath = path.join(TOKENS_DIR, file);
-            const key = file.replace('.json', '');
-            globalTokens[key] = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+
+    async function scanDir(dir, prefix = '') {
+        const entries = await fs.readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                await scanDir(fullPath, `${prefix}${entry.name}.`);
+            } else if (entry.name.endsWith('.json')) {
+                const key = `${prefix}${entry.name.replace('.json', '')}`;
+                globalTokens[key] = JSON.parse(await fs.readFile(fullPath, 'utf-8'));
+            }
         }
     }
+
+    await scanDir(TOKENS_DIR);
     console.log('💎 Tokens Loaded:', Object.keys(globalTokens).join(', '));
 }
 
@@ -266,20 +277,50 @@ function resolveToken(tokenPath) {
 
 /**
  * Resolve a variant with its Layout and Tokens
+ * Enforces Immutable Hierarchy: Base -> Layout -> Variant -> Tokens
  */
 async function resolveVariant(variantName) {
-    const variantPath = path.join(TEMPLATES_DIR, 'variants', `${variantName}.json`);
-    if (!(await fs.pathExists(variantPath))) {
-        throw new Error(`Variant not found: ${variantName}`);
+    const variantDir = path.join(TEMPLATES_DIR, 'variants', variantName);
+    const contractPath = path.join(variantDir, 'contract.json');
+
+    if (!(await fs.pathExists(contractPath))) {
+        throw new Error(`❌ IMMUTABLE ERROR: Variant "${variantName}" is missing a mandatory contract.json at ${contractPath}`);
     }
-    const variant = JSON.parse(await fs.readFile(variantPath, 'utf-8'));
+
+    const variant = JSON.parse(await fs.readFile(contractPath, 'utf-8'));
+
+    // ⛔ Rule: No Variant Inheritance
+    if (variant.extends || variant.parent) {
+        throw new Error(`❌ IMMUTABLE ERROR: Variant "${variantName}" attempts illegal inheritance. Variants must be standalone contracts.`);
+    }
 
     // Resolve Layout
     const layoutPath = path.join(TEMPLATES_DIR, 'layouts', `${variant.layout}.json`);
     if (!(await fs.pathExists(layoutPath))) {
-        throw new Error(`Layout not found: ${variant.layout}`);
+        throw new Error(`❌ FAIL-FAST: Layout "${variant.layout}" requested by variant "${variantName}" was not found.`);
     }
     const layout = JSON.parse(await fs.readFile(layoutPath, 'utf-8'));
+
+    // ⛔ Rule: No Layout Inheritance
+    if (layout.extends || layout.parent) {
+        throw new Error(`❌ IMMUTABLE ERROR: Layout "${variant.layout}" attempts illegal inheritance.`);
+    }
+
+    // 🧩 Step 2: Assemble Token Profile
+    const profile = variant.tokenProfile || 'global';
+    const profileTokens = {};
+
+    // Merge Strategy: Start with global, then override with profile
+    const tokenGroups = ['colors', 'fonts', 'spacing', 'radius', 'shadows', 'commerce'];
+
+    for (const group of tokenGroups) {
+        const globalGroup = globalTokens[`global.${group}`] || {};
+        const activeGroup = globalTokens[`${profile}.${group}`] || {};
+        profileTokens[group] = { ...globalGroup, ...activeGroup };
+    }
+
+    // Attach to variant for the binder to find it
+    variant._tokens = profileTokens;
 
     return { variant, layout };
 }
@@ -298,7 +339,7 @@ async function composePage(layout, config) {
             const compContent = await fs.readFile(componentPath, 'utf-8');
             sectionsHtml += `\n<!-- Section: ${sectionId} -->\n${compContent}\n`;
         } else {
-            console.log(`⚠️ Component not found: ${sectionId}`);
+            throw new Error(`❌ FAIL-FAST: Component "${sectionId}" required by Layout was not found at ${componentPath}`);
         }
     }
 
@@ -309,31 +350,57 @@ async function composePage(layout, config) {
  * 🔒 Step 4.5 - Variant Contract Validation
  * Validates that the variant correctly implements component requirements.
  */
-async function validateVariantContract(variant, layout) {
-    console.log('   🔒 Validating Variant Contract...');
+async function validateVariantContract(variant, layout, config) {
+    console.log('   🔒 Validating Variant Contract (Step 3 Enforcement)...');
 
     // 1. Check Component Variants match Base Manifests
     const componentVariants = variant.componentVariants || {};
     for (const sectionId of layout.sections) {
         const manifestPath = path.join(TEMPLATES_DIR, 'base', 'components', `${sectionId}.component.json`);
 
-        if (await fs.pathExists(manifestPath)) {
-            const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf-8'));
-            const selectedVariant = componentVariants[sectionId];
+        if (!(await fs.pathExists(manifestPath))) {
+            throw new Error(`❌ FAIL-FAST: Component manifest missing for "${sectionId}". Every base component must have a manifest.`);
+        }
 
-            if (selectedVariant && !manifest.supportedVariants.includes(selectedVariant)) {
-                throw new Error(`Invalid Variant: Component "${sectionId}" does not support variant "${selectedVariant}". Supported: ${manifest.supportedVariants.join(', ')}`);
+        const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf-8'));
+
+        // ⛔ Rule 3.1: Variant Support
+        const selectedVariant = componentVariants[sectionId];
+        if (selectedVariant && !manifest.supportedVariants.includes(selectedVariant)) {
+            throw new Error(`❌ INVALID VARIANT: Component "${sectionId}" does not support variant "${selectedVariant}". Supported: ${manifest.supportedVariants.join(', ')}`);
+        }
+
+        // ⛔ Rule 3.2: Required Tokens (Component Contract)
+        if (manifest.requiredTokens) {
+            for (const tRef of manifest.requiredTokens) {
+                const parts = tRef.split('.');
+                if (parts.length === 2) {
+                    const [group, key] = parts;
+                    if (!variant._tokens?.[group] || !variant._tokens[group][key]) {
+                        throw new Error(`❌ CONTRACT VIOLATION: Component "${sectionId}" requires token "${tRef}" which is not provided by profile "${variant.tokenProfile}".`);
+                    }
+                }
+            }
+        }
+
+        // ⛔ Rule 3.3: Required Props (Component Contract)
+        if (manifest.requiredProps) {
+            for (const propPath of manifest.requiredProps) {
+                const value = getValueByPath(config, propPath);
+                if (value === undefined || value === null) {
+                    throw new Error(`❌ CONTRACT VIOLATION: Component "${sectionId}" requires prop "${propPath}" which is missing from project config.`);
+                }
             }
         }
     }
 
-    // 2. Token Integrity Check (will be handled by binder but fail-fast here)
+    // 2. Token Integrity Check (Single Source of Truth)
     if (variant.tokens) {
         for (const [key, tokenValue] of Object.entries(variant.tokens)) {
-            if (tokenValue.includes('.')) {
+            if (typeof tokenValue === 'string' && tokenValue.includes('.')) {
                 const [group, tKey] = tokenValue.split('.');
                 if (!globalTokens[group] || !globalTokens[group][tKey]) {
-                    throw new Error(`Invalid Token: Reference "${tokenValue}" for "${key}" not found in global tokens.`);
+                    throw new Error(`❌ TOKEN ERROR: Reference "${tokenValue}" for "${key}" not found in global tokens.`);
                 }
             }
         }
@@ -433,9 +500,6 @@ async function generateWebsite(config) {
 
     const { variant, layout } = await resolveVariant(variantName);
 
-    // 🔒 Step 4.5 - Validation Gate
-    await validateVariantContract(variant, layout);
-
     const websiteOutput = path.join(OUTPUT_DIR, 'website');
     await fs.ensureDir(websiteOutput);
     await fs.emptyDir(websiteOutput);
@@ -476,12 +540,16 @@ async function generateWebsite(config) {
         await generateSearchIndex(products, websiteOutput);
     }
 
-    // 5. Data Sync
+    // 6. Data Sync
     const dataDir = path.join(websiteOutput, 'data');
     await fs.ensureDir(dataDir);
     await fs.writeFile(path.join(dataDir, 'products.json'), JSON.stringify(products, null, 2));
 
-    // 6. Copy shared assets
+    // 🔒 Step 4.5 - Validation Gate (Enforced Hierarchy)
+    // Now done after all data (static + dynamic) is ready
+    await validateVariantContract(variant, layout, config);
+
+    // 7. Copy shared assets
     const legacyAssets = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001', 'assets');
     if (await fs.pathExists(legacyAssets)) {
         await copyAndProcessDir(legacyAssets, path.join(websiteOutput, 'assets'), config);

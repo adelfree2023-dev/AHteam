@@ -2,8 +2,15 @@
     "id": "hero",
     "name": "Hero Section",
     "supportedVariants": [
-        "split",
-        "centered",
-        "minimalist"
+        "default",
+        "minimalist",
+        "video"
+    ],
+    "requiredProps": [
+        "content.hero.title"
+    ],
+    "requiredTokens": [
+        "colors.primary",
+        "fonts.heading"
     ]
 }

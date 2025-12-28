@@ -3,11 +3,7 @@
     "name": "Pro Electronics Store",
     "vertical": "electronics",
     "layout": "ecommerce-landing",
-    "tokens": {
-        "primary": "colors.accent",
-        "background": "colors.secondary",
-        "text": "colors.text"
-    },
+    "tokenProfile": "luxury.dark-gold",
     "componentVariants": {
         "hero": "minimalist",
         "header": "fixed"

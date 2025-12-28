@@ -1,7 +1,17 @@
 {
     "id": "cart-drawer",
-    "name": "Shopping Cart Drawer",
+    "name": "Cart Drawer",
     "supportedVariants": [
-        "default"
+        "default",
+        "side",
+        "floating"
+    ],
+    "requiredProps": [
+        "branding.logo.primary"
+    ],
+    "requiredTokens": [
+        "colors.background",
+        "colors.primary",
+        "radius.md"
     ]
 }

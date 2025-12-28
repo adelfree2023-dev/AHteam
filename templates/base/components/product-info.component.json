@@ -1,9 +1,18 @@
 {
     "id": "product-info",
-    "name": "Product Details Display",
+    "name": "Product Detail Info",
     "supportedVariants": [
         "default",
         "compact",
-        "gallery"
+        "luxury"
+    ],
+    "requiredProps": [
+        "_current_product.name",
+        "_current_product.price"
+    ],
+    "requiredTokens": [
+        "colors.primary",
+        "colors.text",
+        "commerce.currency_symbol"
     ]
 }

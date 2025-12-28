@@ -1,8 +1,17 @@
 {
     "id": "search",
-    "name": "Smart Search Bar",
+    "name": "Global Search",
     "supportedVariants": [
         "default",
-        "floating"
+        "minimal",
+        "overlay"
+    ],
+    "requiredProps": [
+        "branding.logo.primary"
+    ],
+    "requiredTokens": [
+        "colors.background",
+        "colors.primary",
+        "commerce.currency_symbol"
     ]
 }

@@ -4,6 +4,16 @@
     "supportedVariants": [
         "sticky",
         "fixed",
-        "static"
+        "static",
+        "default"
+    ],
+    "requiredProps": [
+        "branding.logo.primary",
+        "business.name"
+    ],
+    "requiredTokens": [
+        "colors.primary",
+        "colors.text",
+        "fonts.body"
     ]
 }

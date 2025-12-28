@@ -1,8 +1,16 @@
 {
     "id": "featured-products",
-    "name": "Featured Products Grid",
+    "name": "Featured Products",
     "supportedVariants": [
+        "default",
         "grid",
-        "slider"
+        "carousel"
+    ],
+    "requiredProps": [
+        "_composed_data.products"
+    ],
+    "requiredTokens": [
+        "colors.primary",
+        "commerce.currency_symbol"
     ]
 }

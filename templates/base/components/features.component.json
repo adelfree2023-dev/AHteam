@@ -1,8 +1,15 @@
 {
     "id": "features",
-    "name": "Features Icons",
+    "name": "Features Grid",
     "supportedVariants": [
-        "grid",
-        "list"
+        "default",
+        "minimal"
+    ],
+    "requiredProps": [
+        "content.features"
+    ],
+    "requiredTokens": [
+        "colors.primary",
+        "radius.md"
     ]
 }

@@ -113,15 +113,35 @@ export function bindDesignTokens(content, tokens, config) {
  * Process a single file
  */
 export function processFile(content, config, filePath) {
-    // 1. Bind Config Data {{...}}
-    const bindResult = bindData(content, config);
+    let result = content;
 
-    // 2. Bind Design Tokens [[...]]
+    // 1. Process Loops: {{#each path}} ... {{/each}}
+    const loopRegex = /\{\{#each\s+([^}]+)\}\}([\s\S]*?)\{\{\/each\}\}/g;
+    result = result.replace(loopRegex, (match, path, template) => {
+        const list = getValueByPath(config, path.trim());
+        if (!Array.isArray(list)) return '';
+
+        return list.map(item => {
+            // Bind item values into the template
+            let itemHtml = template;
+            const itemRegex = /\{\{item\.([^}]+)\}\}/g;
+            return itemHtml.replace(itemRegex, (m, key) => getValueByPath(item, key.trim()) || '');
+        }).join('');
+    });
+
+    // 2. Bind Config Data {{...}}
+    const bindResult = bindData(result, config);
+
+    // 3. Bind Design Tokens [[...]]
     let finalContent = bindDesignTokens(bindResult.content, config._tokens, config);
 
     if (bindResult.unboundTokens.length > 0) {
-        console.log(`⚠️  Unbound tokens in ${filePath}:`);
-        bindResult.unboundTokens.forEach(t => console.log(`   - {{${t}}}`));
+        // Filter out tokens that might be item.xxx which are handled by loop
+        const filteredUnbound = bindResult.unboundTokens.filter(t => !t.startsWith('item.'));
+        if (filteredUnbound.length > 0) {
+            console.log(`⚠️  Unbound tokens in ${filePath}:`);
+            filteredUnbound.forEach(t => console.log(`   - {{${t}}}`));
+        }
     }
 
     return finalContent;
