@@ -1,0 +1,12 @@
+{
+    "$description": "Configuration requirements for android-webview-001",
+    "required": [
+        "project.name",
+        "project.slug",
+        "branding.colors.primary"
+    ],
+    "optional": [
+        "branding.logo.primary",
+        "business.name"
+    ]
+}

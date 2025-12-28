@@ -1,0 +1,30 @@
+{
+    "$schema": "../../template.manifest.schema.json",
+    "id": "android-webview-001",
+    "name": "Android WebView App",
+    "description": "تطبيق أندرويد بسيط يعتمد على WebView",
+    "type": "android",
+    "category": "webview-based",
+    "version": "1.0.0",
+    "author": "AHteam",
+    "createdAt": "2025-12-28",
+    "supports": {
+        "minSdk": 24,
+        "targetSdk": 34,
+        "languages": [
+            "ar",
+            "en"
+        ],
+        "features": [
+            "webview",
+            "offline-fallback",
+            "config-driven"
+        ]
+    },
+    "customization": {
+        "appName": "from config",
+        "packageName": "from config",
+        "colors": "from config",
+        "startUrl": "from config"
+    }
+}

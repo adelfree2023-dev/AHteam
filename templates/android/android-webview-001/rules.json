@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0",
+    "forbidden": [
+        "firebase",
+        "googleAnalytics",
+        "platformAuth",
+        "remoteConfig",
+        "pushNotifications",
+        "factoryApiCalls",
+        "cloudStorage"
+    ],
+    "allowed": [
+        "webview",
+        "localConfig",
+        "localStorage",
+        "offlineFallback",
+        "branding"
+    ],
+    "exportable": true,
+    "standalone": true
+}

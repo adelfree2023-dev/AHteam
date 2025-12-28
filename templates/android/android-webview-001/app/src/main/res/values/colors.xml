@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">{{branding.colors.primary}}</color>
+    <color name="primary_dark">#1e40af</color>
+    <color name="accent">{{branding.colors.accent}}</color>
+    <color name="background">{{branding.colors.background}}</color>
+    <color name="text">{{branding.colors.text}}</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>
