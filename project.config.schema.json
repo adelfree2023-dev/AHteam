@@ -1,0 +1,815 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://ahteam.dev/schemas/project.config.schema.json",
+    "title": "AHteam Project Configuration Schema",
+    "description": "Central Contract Schema - V1.0.0 LOCKED",
+    "type": "object",
+    "required": [
+        "$version",
+        "$locked",
+        "project",
+        "branding",
+        "business",
+        "content",
+        "features",
+        "localization",
+        "delivery",
+        "meta"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "$version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "$locked": {
+            "type": "boolean",
+            "const": true
+        },
+        "$lockDate": {
+            "type": "string",
+            "format": "date"
+        },
+        "$description": {
+            "type": "string"
+        },
+        "project": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "slug",
+                "version",
+                "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9-]+$"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "ecommerce"
+                    ]
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "exportedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "branding": {
+            "type": "object",
+            "required": [
+                "logo",
+                "colors",
+                "fonts",
+                "style"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "logo": {
+                    "type": "object",
+                    "required": [
+                        "primary"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "primary": {
+                            "type": "string"
+                        },
+                        "secondary": {
+                            "type": "string"
+                        },
+                        "favicon": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "colors": {
+                    "type": "object",
+                    "required": [
+                        "primary",
+                        "secondary",
+                        "accent",
+                        "background",
+                        "text"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "primary": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "secondary": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "accent": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "background": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "text": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "success": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "warning": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "error": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        }
+                    }
+                },
+                "fonts": {
+                    "type": "object",
+                    "required": [
+                        "primary",
+                        "secondary"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "primary": {
+                            "type": "string"
+                        },
+                        "secondary": {
+                            "type": "string"
+                        },
+                        "headings": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "style": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "borderRadius": {
+                            "type": "string"
+                        },
+                        "shadowLevel": {
+                            "type": "string",
+                            "enum": [
+                                "none",
+                                "light",
+                                "medium",
+                                "heavy"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "business": {
+            "type": "object",
+            "required": [
+                "name",
+                "email",
+                "currency"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "legalName": {
+                    "type": "string"
+                },
+                "taxId": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "whatsapp": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "street": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "state": {
+                            "type": "string"
+                        },
+                        "country": {
+                            "type": "string"
+                        },
+                        "postalCode": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "social": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "facebook": {
+                            "type": "string"
+                        },
+                        "instagram": {
+                            "type": "string"
+                        },
+                        "twitter": {
+                            "type": "string"
+                        },
+                        "tiktok": {
+                            "type": "string"
+                        },
+                        "youtube": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "currency": {
+                    "type": "object",
+                    "required": [
+                        "code",
+                        "symbol"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "code": {
+                            "type": "string",
+                            "pattern": "^[A-Z]{3}$"
+                        },
+                        "symbol": {
+                            "type": "string"
+                        },
+                        "position": {
+                            "type": "string",
+                            "enum": [
+                                "before",
+                                "after"
+                            ]
+                        }
+                    }
+                },
+                "timezone": {
+                    "type": "string"
+                }
+            }
+        },
+        "content": {
+            "type": "object",
+            "required": [
+                "homepage",
+                "about",
+                "contact",
+                "policies",
+                "footer"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "homepage": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "hero": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "subtitle": {
+                                    "type": "string"
+                                },
+                                "cta": {
+                                    "type": "string"
+                                },
+                                "image": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "sections": {
+                            "type": "array"
+                        }
+                    }
+                },
+                "about": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "mission": {
+                            "type": "string"
+                        },
+                        "vision": {
+                            "type": "string"
+                        },
+                        "images": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "contact": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "formFields": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "name",
+                                    "email",
+                                    "phone",
+                                    "message",
+                                    "subject"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "policies": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "terms": {
+                            "type": "string"
+                        },
+                        "privacy": {
+                            "type": "string"
+                        },
+                        "refund": {
+                            "type": "string"
+                        },
+                        "shipping": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "footer": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "copyright": {
+                            "type": "string"
+                        },
+                        "links": {
+                            "type": "array"
+                        }
+                    }
+                }
+            }
+        },
+        "features": {
+            "type": "object",
+            "required": [
+                "website",
+                "admin",
+                "mobile",
+                "integrations"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "website": {
+                    "type": "object",
+                    "required": [
+                        "enabled",
+                        "pages"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "pages": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "home": {
+                                    "type": "boolean"
+                                },
+                                "products": {
+                                    "type": "boolean"
+                                },
+                                "productDetail": {
+                                    "type": "boolean"
+                                },
+                                "cart": {
+                                    "type": "boolean"
+                                },
+                                "checkout": {
+                                    "type": "boolean"
+                                },
+                                "tracking": {
+                                    "type": "boolean"
+                                },
+                                "about": {
+                                    "type": "boolean"
+                                },
+                                "contact": {
+                                    "type": "boolean"
+                                },
+                                "terms": {
+                                    "type": "boolean"
+                                },
+                                "privacy": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                },
+                "admin": {
+                    "type": "object",
+                    "required": [
+                        "enabled",
+                        "modules"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "modules": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "dashboard": {
+                                    "type": "boolean"
+                                },
+                                "products": {
+                                    "type": "boolean"
+                                },
+                                "categories": {
+                                    "type": "boolean"
+                                },
+                                "orders": {
+                                    "type": "boolean"
+                                },
+                                "customers": {
+                                    "type": "boolean"
+                                },
+                                "reports": {
+                                    "type": "boolean"
+                                },
+                                "settings": {
+                                    "type": "boolean"
+                                },
+                                "users": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                },
+                "mobile": {
+                    "type": "object",
+                    "required": [
+                        "enabled",
+                        "platform",
+                        "screens"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "platform": {
+                            "type": "string",
+                            "enum": [
+                                "android",
+                                "ios",
+                                "both"
+                            ]
+                        },
+                        "screens": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "splash": {
+                                    "type": "boolean"
+                                },
+                                "home": {
+                                    "type": "boolean"
+                                },
+                                "products": {
+                                    "type": "boolean"
+                                },
+                                "productDetail": {
+                                    "type": "boolean"
+                                },
+                                "cart": {
+                                    "type": "boolean"
+                                },
+                                "checkout": {
+                                    "type": "boolean"
+                                },
+                                "orders": {
+                                    "type": "boolean"
+                                },
+                                "profile": {
+                                    "type": "boolean"
+                                },
+                                "notifications": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                },
+                "integrations": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "payment": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "providers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "shipping": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "providers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "analytics": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "googleAnalyticsId": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "notifications": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "email": {
+                                    "type": "boolean"
+                                },
+                                "sms": {
+                                    "type": "boolean"
+                                },
+                                "push": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "localization": {
+            "type": "object",
+            "required": [
+                "defaultLanguage",
+                "supportedLanguages"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "defaultLanguage": {
+                    "type": "string",
+                    "enum": [
+                        "ar",
+                        "en"
+                    ]
+                },
+                "supportedLanguages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "ar",
+                            "en"
+                        ]
+                    }
+                },
+                "direction": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "ar": {
+                            "type": "string",
+                            "const": "rtl"
+                        },
+                        "en": {
+                            "type": "string",
+                            "const": "ltr"
+                        }
+                    }
+                },
+                "translations": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "ar": {
+                            "type": "object"
+                        },
+                        "en": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "delivery": {
+            "type": "object",
+            "required": [
+                "format",
+                "includes",
+                "documentation"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "format": {
+                    "type": "string",
+                    "enum": [
+                        "zip",
+                        "tar"
+                    ]
+                },
+                "includes": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "sourceCode": {
+                            "type": "boolean"
+                        },
+                        "database": {
+                            "type": "boolean"
+                        },
+                        "docker": {
+                            "type": "boolean"
+                        },
+                        "documentation": {
+                            "type": "boolean"
+                        },
+                        "assets": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "documentation": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "readme": {
+                            "type": "boolean"
+                        },
+                        "deployment": {
+                            "type": "boolean"
+                        },
+                        "api": {
+                            "type": "boolean"
+                        },
+                        "userManual": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "environment": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "template": {
+                            "type": "boolean"
+                        },
+                        "example": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "meta": {
+            "type": "object",
+            "required": [
+                "seo"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "seo": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "keywords": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "ogImage": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "pwa": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "shortName": {
+                            "type": "string"
+                        },
+                        "themeColor": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "analytics": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "trackingId": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

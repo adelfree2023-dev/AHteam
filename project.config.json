@@ -1,0 +1,226 @@
+{
+    "$schema": "./project.config.schema.json",
+    "$version": "1.0.0",
+    "$locked": true,
+    "$lockDate": "2025-12-28",
+    "$description": "AHteam Central Contract - Single Source of Truth",
+    "project": {
+        "id": "",
+        "name": "",
+        "slug": "",
+        "version": "1.0.0",
+        "type": "ecommerce",
+        "createdAt": "",
+        "exportedAt": ""
+    },
+    "branding": {
+        "logo": {
+            "primary": "",
+            "secondary": "",
+            "favicon": ""
+        },
+        "colors": {
+            "primary": "#000000",
+            "secondary": "#ffffff",
+            "accent": "#0066ff",
+            "background": "#ffffff",
+            "text": "#000000",
+            "success": "#22c55e",
+            "warning": "#f59e0b",
+            "error": "#ef4444"
+        },
+        "fonts": {
+            "primary": "Cairo",
+            "secondary": "Inter",
+            "headings": "Cairo",
+            "body": "Inter"
+        },
+        "style": {
+            "borderRadius": "8px",
+            "shadowLevel": "medium"
+        }
+    },
+    "business": {
+        "name": "",
+        "legalName": "",
+        "taxId": "",
+        "email": "",
+        "phone": "",
+        "whatsapp": "",
+        "address": {
+            "street": "",
+            "city": "",
+            "state": "",
+            "country": "",
+            "postalCode": ""
+        },
+        "social": {
+            "facebook": "",
+            "instagram": "",
+            "twitter": "",
+            "tiktok": "",
+            "youtube": ""
+        },
+        "currency": {
+            "code": "EGP",
+            "symbol": "ج.م",
+            "position": "after"
+        },
+        "timezone": "Africa/Cairo"
+    },
+    "content": {
+        "homepage": {
+            "hero": {
+                "title": "",
+                "subtitle": "",
+                "cta": "",
+                "image": ""
+            },
+            "sections": []
+        },
+        "about": {
+            "title": "",
+            "description": "",
+            "mission": "",
+            "vision": "",
+            "images": []
+        },
+        "contact": {
+            "title": "",
+            "description": "",
+            "formFields": [
+                "name",
+                "email",
+                "phone",
+                "message"
+            ]
+        },
+        "policies": {
+            "terms": "",
+            "privacy": "",
+            "refund": "",
+            "shipping": ""
+        },
+        "footer": {
+            "copyright": "",
+            "links": []
+        }
+    },
+    "features": {
+        "website": {
+            "enabled": true,
+            "pages": {
+                "home": true,
+                "products": true,
+                "productDetail": true,
+                "cart": true,
+                "checkout": true,
+                "tracking": true,
+                "about": true,
+                "contact": true,
+                "terms": true,
+                "privacy": true
+            }
+        },
+        "admin": {
+            "enabled": true,
+            "modules": {
+                "dashboard": true,
+                "products": true,
+                "categories": true,
+                "orders": true,
+                "customers": true,
+                "reports": true,
+                "settings": true,
+                "users": true
+            }
+        },
+        "mobile": {
+            "enabled": true,
+            "platform": "android",
+            "screens": {
+                "splash": true,
+                "home": true,
+                "products": true,
+                "productDetail": true,
+                "cart": true,
+                "checkout": true,
+                "orders": true,
+                "profile": true,
+                "notifications": true
+            }
+        },
+        "integrations": {
+            "payment": {
+                "enabled": false,
+                "providers": []
+            },
+            "shipping": {
+                "enabled": false,
+                "providers": []
+            },
+            "analytics": {
+                "enabled": false,
+                "googleAnalyticsId": ""
+            },
+            "notifications": {
+                "email": false,
+                "sms": false,
+                "push": false
+            }
+        }
+    },
+    "localization": {
+        "defaultLanguage": "ar",
+        "supportedLanguages": [
+            "ar",
+            "en"
+        ],
+        "direction": {
+            "ar": "rtl",
+            "en": "ltr"
+        },
+        "translations": {
+            "ar": {},
+            "en": {}
+        }
+    },
+    "delivery": {
+        "format": "zip",
+        "includes": {
+            "sourceCode": true,
+            "database": true,
+            "docker": true,
+            "documentation": true,
+            "assets": true
+        },
+        "documentation": {
+            "readme": true,
+            "deployment": true,
+            "api": true,
+            "userManual": true
+        },
+        "environment": {
+            "template": true,
+            "example": true
+        }
+    },
+    "meta": {
+        "seo": {
+            "title": "",
+            "description": "",
+            "keywords": [],
+            "ogImage": ""
+        },
+        "pwa": {
+            "enabled": false,
+            "name": "",
+            "shortName": "",
+            "themeColor": ""
+        },
+        "analytics": {
+            "enabled": false,
+            "trackingId": ""
+        }
+    }
+}
