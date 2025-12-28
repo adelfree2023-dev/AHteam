@@ -1,0 +1,9 @@
+{
+    "name": "@ahteam/landing",
+    "version": "1.0.0",
+    "description": "AHteam Landing Page",
+    "type": "module",
+    "scripts": {
+        "start": "npx serve -p 8080 ."
+    }
+}
