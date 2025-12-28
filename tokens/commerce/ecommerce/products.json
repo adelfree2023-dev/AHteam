@@ -1,0 +1,58 @@
+[
+    {
+        "id": "prod-001",
+        "name": "سماعات لاسلكية احترافية",
+        "sku": "HPH-001",
+        "slug": "wireless-headphones-pro",
+        "basePrice": 299,
+        "currency": "EGP",
+        "attributes": {
+            "color": "أسود",
+            "warranty": "سنتين"
+        },
+        "images": [],
+        "category": "electronics"
+    },
+    {
+        "id": "prod-002",
+        "name": "شاحن سريع 65W",
+        "sku": "CHG-002",
+        "slug": "fast-charger-65w",
+        "basePrice": 149,
+        "currency": "EGP",
+        "attributes": {
+            "power": "65W",
+            "ports": "USB-C"
+        },
+        "images": [],
+        "category": "electronics"
+    },
+    {
+        "id": "prod-003",
+        "name": "ماوس جيمنج RGB",
+        "sku": "MSE-003",
+        "slug": "gaming-mouse-rgb",
+        "basePrice": 199,
+        "currency": "EGP",
+        "attributes": {
+            "dpi": "16000",
+            "buttons": "8"
+        },
+        "images": [],
+        "category": "electronics"
+    },
+    {
+        "id": "prod-004",
+        "name": "كيبورد ميكانيكي",
+        "sku": "KBD-004",
+        "slug": "mechanical-keyboard",
+        "basePrice": 449,
+        "currency": "EGP",
+        "attributes": {
+            "switches": "Red",
+            "layout": "Full Size"
+        },
+        "images": [],
+        "category": "electronics"
+    }
+]
