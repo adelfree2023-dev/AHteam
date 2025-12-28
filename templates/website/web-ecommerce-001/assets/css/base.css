@@ -231,3 +231,136 @@ select:focus {
 .mb-lg {
     margin-bottom: var(--spacing-lg);
 }
+
+/* ================================
+   Header Styles
+   ================================ */
+.site-header {
+    background: var(--color-surface, #1e1e1e);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.logo {
+    text-decoration: none;
+}
+
+.logo-text {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary, #d4af37);
+}
+
+.main-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.main-nav a {
+    color: var(--color-text, #fff);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.main-nav a:hover {
+    color: var(--color-primary, #d4af37);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cart-btn {
+    background: none;
+    border: none;
+    color: var(--color-text, #fff);
+    cursor: pointer;
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--color-primary, #d4af37);
+    color: var(--color-secondary, #1a1a1a);
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+.mobile-menu-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .main-nav {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .mobile-menu-btn span {
+        width: 24px;
+        height: 2px;
+        background: var(--color-text, #fff);
+    }
+}
+
+/* ================================
+   Footer Styles
+   ================================ */
+.site-footer {
+    background: var(--color-surface, #1e1e1e);
+    padding: 3rem 0 1rem;
+    color: var(--color-text-muted, #aaa);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+    color: var(--color-text, #fff);
+    margin-bottom: 1rem;
+}
+
+.footer-section a {
+    display: block;
+    color: var(--color-text-muted, #aaa);
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    color: var(--color-primary, #d4af37);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

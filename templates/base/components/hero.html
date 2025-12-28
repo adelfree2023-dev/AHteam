@@ -7,8 +7,62 @@
                 <a href="/products.html" class="btn btn-primary">{{content.hero.cta}}</a>
             </div>
         </div>
-        <div class="hero-image">
-            <img src="{{content.hero.image}}" alt="{{content.hero.title}}">
+        <div class="hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="200" height="200">
+                <path
+                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
         </div>
     </div>
 </section>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, var(--color-secondary, #1a1a1a), var(--color-background, #0f0f0f));
+        padding: var(--spacing-xl, 4rem) 0;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .hero-content {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        color: var(--color-primary, #d4af37);
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: var(--color-text-muted, #aaa);
+        margin-bottom: 2rem;
+    }
+
+    .hero-icon {
+        flex-shrink: 0;
+        color: var(--color-primary, #d4af37);
+        opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        .hero-icon {
+            display: none;
+        }
+
+        .hero-section {
+            text-align: center;
+        }
+    }
+</style>
