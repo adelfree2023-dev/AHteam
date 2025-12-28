@@ -2,6 +2,7 @@
     "id": "minimal-clinic",
     "vertical": "clinic",
     "goal": "book",
+    "quality_approved": true,
     "layout": "minimal-01",
     "tokenProfile": "medical",
     "componentVariants": {

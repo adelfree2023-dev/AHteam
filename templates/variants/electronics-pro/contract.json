@@ -2,6 +2,8 @@
     "id": "electronics-pro",
     "name": "Pro Electronics Store",
     "vertical": "electronics",
+    "goal": "sell",
+    "quality_approved": true,
     "layout": "ecommerce-landing",
     "tokenProfile": "luxury.dark-gold",
     "componentVariants": {
