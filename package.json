@@ -15,7 +15,10 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
-    "clean": "rimraf node_modules apps/*/node_modules packages/*/node_modules"
+    "clean": "rimraf node_modules apps/*/node_modules packages/*/node_modules",
+    "generate": "cd generator && npm run generate",
+    "trial": "cd trial && npm start",
+    "cleanup": "node scripts/cleanup.js"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
