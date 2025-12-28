@@ -192,11 +192,11 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server - LOCALHOST ONLY
-app.listen(PORT, '127.0.0.1', () => {
+// Start server - Allow access from network
+app.listen(PORT, '0.0.0.0', () => {
     console.log('🏭 AHteam Factory Admin');
     console.log('========================');
-    console.log(`🔒 Localhost only: http://127.0.0.1:${PORT}`);
+    console.log(`🌐 http://0.0.0.0:${PORT}`);
     console.log('');
     console.log('Pages:');
     console.log('  Dashboard  /');
