@@ -1,0 +1,19 @@
+{
+    "id": "ecommerce-02",
+    "name": "Brand Store",
+    "vertical": "ecommerce",
+    "requiredComponents": [
+        "header",
+        "hero",
+        "gallery",
+        "featured-products",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "gallery",
+        "featured-products",
+        "footer"
+    ]
+}

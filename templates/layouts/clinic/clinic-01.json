@@ -1,0 +1,18 @@
+{
+    "id": "clinic-01",
+    "name": "Medical Clinic",
+    "vertical": "clinic",
+    "requiredComponents": [
+        "header",
+        "booking",
+        "contact",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "booking",
+        "footer"
+    ]
+}

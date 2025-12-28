@@ -1,0 +1,16 @@
+{
+    "id": "landing-01",
+    "name": "Standard Landing",
+    "vertical": "general",
+    "requiredComponents": [
+        "header",
+        "hero",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "footer"
+    ]
+}

@@ -1,6 +1,7 @@
 {
     "id": "luxury-fashion",
-    "vertical": "fashion",
+    "vertical": "ecommerce",
+    "goal": "sell",
     "layout": "ecommerce-02",
     "tokenProfile": "luxury.dark-gold",
     "componentVariants": {

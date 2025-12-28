@@ -1,0 +1,14 @@
+{
+    "id": "luxury",
+    "personality": "premium, calm, exclusive",
+    "allowedComponents": [
+        "header",
+        "hero",
+        "gallery",
+        "pricing",
+        "featured-products",
+        "footer"
+    ],
+    "defaultMotion": "slow",
+    "density": "spacious"
+}

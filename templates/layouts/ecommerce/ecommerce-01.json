@@ -1,0 +1,17 @@
+{
+    "id": "ecommerce-01",
+    "name": "Direct Shop",
+    "vertical": "ecommerce",
+    "requiredComponents": [
+        "header",
+        "hero",
+        "featured-products",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "featured-products",
+        "footer"
+    ]
+}

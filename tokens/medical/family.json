@@ -1,0 +1,15 @@
+{
+    "id": "medical",
+    "personality": "professional, trustworthy, safe",
+    "allowedComponents": [
+        "header",
+        "hero",
+        "features",
+        "testimonials",
+        "booking",
+        "contact",
+        "footer"
+    ],
+    "defaultMotion": "normal",
+    "density": "precise"
+}

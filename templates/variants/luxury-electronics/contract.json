@@ -1,6 +1,7 @@
 {
     "id": "luxury-electronics",
-    "vertical": "electronics",
+    "vertical": "ecommerce",
+    "goal": "sell",
     "layout": "ecommerce-02",
     "tokenProfile": "luxury.dark-gold",
     "componentVariants": {

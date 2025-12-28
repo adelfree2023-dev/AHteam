@@ -1,6 +1,7 @@
 {
     "id": "clinic-clean",
-    "vertical": "medical",
+    "vertical": "clinic",
+    "goal": "book",
     "layout": "clinic-01",
     "tokenProfile": "medical",
     "componentVariants": {

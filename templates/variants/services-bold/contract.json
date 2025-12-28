@@ -1,6 +1,7 @@
 {
     "id": "services-bold",
-    "vertical": "corporate",
+    "vertical": "services",
+    "goal": "collect-leads",
     "layout": "services-01",
     "tokenProfile": "vibrant",
     "componentVariants": {

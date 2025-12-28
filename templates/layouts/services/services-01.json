@@ -1,0 +1,18 @@
+{
+    "id": "services-01",
+    "name": "Corporate Services",
+    "vertical": "services",
+    "requiredComponents": [
+        "header",
+        "features",
+        "contact",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "features",
+        "testimonials",
+        "contact",
+        "footer"
+    ]
+}

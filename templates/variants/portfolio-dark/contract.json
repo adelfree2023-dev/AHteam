@@ -1,6 +1,7 @@
 {
     "id": "portfolio-dark",
     "vertical": "portfolio",
+    "goal": "showcase",
     "layout": "portfolio-01",
     "tokenProfile": "portfolio",
     "componentVariants": {

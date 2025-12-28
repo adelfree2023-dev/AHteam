@@ -1,0 +1,18 @@
+{
+    "id": "freelancer-01",
+    "name": "Freelancer Services",
+    "vertical": "freelancer",
+    "requiredComponents": [
+        "header",
+        "pricing",
+        "testimonials",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "pricing",
+        "testimonials",
+        "footer"
+    ]
+}

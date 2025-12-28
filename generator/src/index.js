@@ -294,12 +294,32 @@ async function resolveVariant(variantName) {
         throw new Error(`❌ IMMUTABLE ERROR: Variant "${variantName}" attempts illegal inheritance. Variants must be standalone contracts.`);
     }
 
-    // Resolve Layout
-    const layoutPath = path.join(TEMPLATES_DIR, 'layouts', `${variant.layout}.json`);
-    if (!(await fs.pathExists(layoutPath))) {
-        throw new Error(`❌ FAIL-FAST: Layout "${variant.layout}" requested by variant "${variantName}" was not found.`);
+    // Resolve Layout (Recursive search to support Vertical subdirectories)
+    let layout = null;
+    async function findLayout(dir) {
+        const entries = await fs.readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                const found = await findLayout(fullPath);
+                if (found) return found;
+            } else if (entry.name === `${variant.layout}.json`) {
+                return JSON.parse(await fs.readFile(fullPath, 'utf-8'));
+            }
+        }
+        return null;
     }
-    const layout = JSON.parse(await fs.readFile(layoutPath, 'utf-8'));
+
+    layout = await findLayout(path.join(TEMPLATES_DIR, 'layouts'));
+
+    if (!layout) {
+        throw new Error(`❌ FAIL-FAST: Layout "${variant.layout}" requested by variant "${variantName}" was not found in any vertical subdirectory.`);
+    }
+
+    // ⛔ Rule: Layout Vertical Guard
+    if (variant.vertical && layout.vertical && variant.vertical !== layout.vertical) {
+        throw new Error(`❌ VERTICAL MISMATCH: Variant "${variantName}" (Vertical: ${variant.vertical}) attempted to use Layout "${variant.layout}" (Vertical: ${layout.vertical}).`);
+    }
 
     // ⛔ Rule: No Layout Inheritance
     if (layout.extends || layout.parent) {
@@ -352,6 +372,38 @@ async function composePage(layout, config) {
  */
 async function validateVariantContract(variant, layout, config) {
     console.log('   🔒 Validating Variant Contract (Step 3 Enforcement)...');
+
+    const profile = variant.tokenProfile || 'global';
+    const profileParts = profile.split('.');
+    const familyId = profileParts[0];
+
+    // ⛔ Hardened Rule: Design Family Contract Check
+    const familyContractPath = path.join(TOKENS_DIR, familyId, 'family.json');
+    if (await fs.pathExists(familyContractPath)) {
+        const family = JSON.parse(await fs.readFile(familyContractPath, 'utf-8'));
+
+        // Check if layout sections are allowed by family
+        for (const sectionId of layout.sections) {
+            if (family.allowedComponents && !family.allowedComponents.includes(sectionId)) {
+                // Warning only for now to allow flexibility, but could be error
+                console.warn(`    ⚠️  FAMILY GUARD: Component "${sectionId}" is not officially supported by Design Family "${familyId}".`);
+            }
+        }
+    }
+
+    // ⛔ Hardened Rule: Required Components (Layout Level)
+    if (layout.requiredComponents) {
+        for (const reqComp of layout.requiredComponents) {
+            if (!layout.sections.includes(reqComp)) {
+                throw new Error(`❌ LAYOUT VIOLATION: Layout "${layout.id}" requires component "${reqComp}" which is missing from its "sections" list.`);
+            }
+        }
+    }
+
+    // ⛔ Hardened Rule: Business Goal declaration
+    if (!variant.goal) {
+        console.warn(`    ⚠️  CONVERSION WARNING: Variant "${variant.id}" is missing a mandatory "goal" declaration (sell, book, showcase, collect-leads).`);
+    }
 
     // 1. Check Component Variants match Base Manifests
     const componentVariants = variant.componentVariants || {};

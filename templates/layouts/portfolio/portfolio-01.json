@@ -1,0 +1,16 @@
+{
+    "id": "portfolio-01",
+    "name": "Art Portfolio",
+    "vertical": "portfolio",
+    "requiredComponents": [
+        "header",
+        "gallery",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "gallery",
+        "footer"
+    ]
+}

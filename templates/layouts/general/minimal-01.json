@@ -1,0 +1,15 @@
+{
+    "id": "minimal-01",
+    "name": "Ultra Minimalist",
+    "vertical": "general",
+    "requiredComponents": [
+        "header",
+        "hero",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "footer"
+    ]
+}

@@ -1,6 +1,7 @@
 {
     "id": "minimalist-tech",
-    "vertical": "technology",
+    "vertical": "general",
+    "goal": "showcase",
     "layout": "minimal-01",
     "tokenProfile": "minimalist",
     "componentVariants": {

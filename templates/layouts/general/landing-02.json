@@ -1,0 +1,18 @@
+{
+    "id": "landing-02",
+    "name": "Advanced Landing",
+    "vertical": "general",
+    "requiredComponents": [
+        "header",
+        "hero",
+        "testimonials",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "testimonials",
+        "footer"
+    ]
+}

@@ -1,6 +1,7 @@
 {
     "id": "minimal-clinic",
-    "vertical": "medical",
+    "vertical": "clinic",
+    "goal": "book",
     "layout": "minimal-01",
     "tokenProfile": "medical",
     "componentVariants": {

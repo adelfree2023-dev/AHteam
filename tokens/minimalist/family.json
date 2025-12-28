@@ -1,0 +1,15 @@
+{
+    "id": "minimalist",
+    "personality": "clean, modern, focused",
+    "allowedComponents": [
+        "header",
+        "hero",
+        "features",
+        "pricing",
+        "testimonials",
+        "contact",
+        "footer"
+    ],
+    "defaultMotion": "fast",
+    "density": "normal"
+}

@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHteam - Template Discovery</title>
+    <title>AHteam - Discovery (Hardened)</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #2563eb;
             --secondary: #64748b;
-            --bg: #f1f5f9;
+            --bg: #f8fafc;
             --surface: #ffffff;
             --text: #1e293b;
         }
@@ -22,28 +22,24 @@
             margin: 0;
             display: flex;
             height: 100vh;
-            overflow: hidden;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 320px;
+            width: 300px;
             background: var(--surface);
             border-left: 1px solid #e2e8f0;
             padding: 2rem;
             display: flex;
             flex-direction: column;
             box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
-            z-index: 10;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--primary);
             margin-bottom: 2rem;
-            border-bottom: 2px solid var(--bg);
-            padding-bottom: 1rem;
         }
 
         .filter-group {
@@ -55,29 +51,16 @@
             font-weight: bold;
             margin-bottom: 0.5rem;
             color: var(--secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .filter-select {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.7rem;
             border-radius: 8px;
             border: 1px solid #e2e8f0;
-            background: #f8fafc;
+            background: #fff;
             font-family: inherit;
-            outline: none;
-        }
-
-        .stats {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-            font-size: 0.8rem;
-            color: var(--secondary);
-        }
-
-        .stats b {
-            color: var(--primary);
         }
 
         /* Main Content */
@@ -85,22 +68,28 @@
             flex: 1;
             padding: 2rem;
             overflow-y: auto;
-            background: #fff;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 1.5rem;
         }
 
         .template-card {
+            background: var(--surface);
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
         }
 
         .template-card:hover {
@@ -110,12 +99,12 @@
         }
 
         .preview-box {
-            height: 160px;
-            background: #f8fafc;
+            height: 140px;
+            background: #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
+            font-size: 3rem;
         }
 
         .card-info {
@@ -127,74 +116,30 @@
             font-size: 1.1rem;
         }
 
-        .card-info p {
-            margin: 0;
-            font-size: 0.85rem;
-            color: var(--secondary);
-        }
-
-        .tags {
+        .meta-badges {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.4rem;
         }
 
-        .tag {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            background: #f1f5f9;
+        .badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 4px;
-            color: var(--secondary);
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 100;
-            display: none;
-            padding: 2rem;
-        }
-
-        .modal-content {
-            background: #fff;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .modal-header {
-            padding: 1rem 2rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-body {
-            flex: 1;
             background: #f1f5f9;
-            position: relative;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .badge.goal {
+            background: #dcfce7;
+            color: #166534;
         }
 
-        .close-btn {
-            font-size: 2rem;
-            cursor: pointer;
-            border: none;
-            background: none;
+        .badge.vertical {
+            background: #dbeafe;
+            color: #1e40af;
         }
     </style>
 </head>
@@ -202,107 +147,97 @@
 <body>
 
     <div class="sidebar">
-        <div class="logo">AHteam Scaling Engine</div>
+        <div class="logo">AHteam Discovery 2.0</div>
 
         <div class="filter-group">
-            <label>التصنيف (Industry)</label>
-            <select class="filter-select" id="industryFilter" onchange="applyFilters()">
+            <label>المجال (Vertical)</label>
+            <select class="filter-select" id="verticalFilter" onchange="applyFilters()">
                 <option value="all">الكل</option>
-                <option value="fashion">أزياء (Fashion)</option>
-                <option value="electronics">إلكترونيات (Electronics)</option>
-                <option value="medical">طبي (Medical)</option>
-                <option value="portfolio">حقيبة أعمال (Portfolio)</option>
-                <option value="freelancer">عمل حر (Freelancer)</option>
+                <option value="ecommerce">Ecommerce</option>
+                <option value="clinic">Clinic</option>
+                <option value="freelancer">Freelancer</option>
+                <option value="portfolio">Portfolio</option>
+                <option value="services">Services</option>
             </select>
         </div>
 
         <div class="filter-group">
-            <label>النمط البصري (Style Family)</label>
+            <label>الهدف (Goal)</label>
+            <select class="filter-select" id="goalFilter" onchange="applyFilters()">
+                <option value="all">الكل</option>
+                <option value="sell">Sell (بيع)</option>
+                <option value="book">Book (حجز)</option>
+                <option value="showcase">Showcase (عرض)</option>
+                <option value="collect-leads">Leads (بيانات)</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>النمط (Family)</label>
             <select class="filter-select" id="styleFilter" onchange="applyFilters()">
                 <option value="all">الكل</option>
                 <option value="minimalist">Minimalist</option>
                 <option value="luxury">Luxury</option>
                 <option value="vibrant">Vibrant</option>
                 <option value="medical">Medical</option>
+                <option value="portfolio">Portfolio</option>
             </select>
-        </div>
-
-        <div class="stats">
-            إجمالي التوليد المتوفر: <b>10x10x10 = 1000</b> تصميماً<br>
-            المعاينة الحالية: <b id="matchCount">10</b> قوالب ذكية
         </div>
     </div>
 
     <div class="main">
-        <div class="grid" id="templateGrid"></div>
-    </div>
-
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">اسم القالب</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <iframe id="previewFrame"></iframe>
-            </div>
+        <div class="header-bar">
+            <h1>مستكشف القوالب (Hardened Phase Q)</h1>
+            <div id="statsCount">النتائج: 10</div>
         </div>
+        <div class="grid" id="templateGrid"></div>
     </div>
 
     <script>
         const variants = [
-            { id: 'minimalist-tech', name: 'Tech Sphere', industry: 'technology', style: 'minimalist', icon: '💻' },
-            { id: 'luxury-electronics', name: 'Electronics Pro', industry: 'electronics', style: 'luxury', icon: '🎧' },
-            { id: 'vibrant-fashion', name: 'Street Vibe', industry: 'fashion', style: 'vibrant', icon: '👕' },
-            { id: 'clinic-clean', name: 'Pure Health', industry: 'medical', style: 'medical', icon: '🩺' },
-            { id: 'freelancer-modern', name: 'Dev Portfolio', industry: 'freelancer', style: 'minimalist', icon: '🚀' },
-            { id: 'portfolio-dark', name: 'Creative Aura', industry: 'portfolio', style: 'portfolio', icon: '🖼️' },
-            { id: 'services-bold', name: 'Impact Corp', industry: 'corporate', style: 'vibrant', icon: '📊' },
-            { id: 'minimal-clinic', name: 'Care Minimal', industry: 'medical', style: 'medical', icon: '🩹' },
-            { id: 'vibrant-electronics', name: 'Electro Neon', industry: 'electronics', style: 'vibrant', icon: '💡' },
-            { id: 'luxury-fashion', name: 'Gold Couture', industry: 'fashion', style: 'luxury', icon: '💎' }
+            { id: 'minimalist-tech', name: 'Tech Minimal', vertical: 'general', goal: 'showcase', style: 'minimalist', icon: '💻' },
+            { id: 'luxury-electronics', name: 'Premium Electro', vertical: 'ecommerce', goal: 'sell', style: 'luxury', icon: '🎧' },
+            { id: 'vibrant-fashion', name: 'Street Flow', vertical: 'ecommerce', goal: 'sell', style: 'vibrant', icon: '👕' },
+            { id: 'clinic-clean', name: 'Safe Clinic', vertical: 'clinic', goal: 'book', style: 'medical', icon: '🩺' },
+            { id: 'freelancer-modern', name: 'Modern Freelance', vertical: 'freelancer', goal: 'collect-leads', style: 'minimalist', icon: '🚀' },
+            { id: 'portfolio-dark', name: 'Creative Portfolio', vertical: 'portfolio', goal: 'showcase', style: 'portfolio', icon: '🖼️' },
+            { id: 'services-bold', name: 'Dynamic Services', vertical: 'services', goal: 'collect-leads', style: 'vibrant', icon: '📊' },
+            { id: 'minimal-clinic', name: 'Clinic Lite', vertical: 'clinic', goal: 'book', style: 'medical', icon: '🩹' },
+            { id: 'vibrant-electronics', name: 'Neon Store', vertical: 'ecommerce', goal: 'sell', style: 'vibrant', icon: '💡' },
+            { id: 'luxury-fashion', name: 'Elegance Shop', vertical: 'ecommerce', goal: 'sell', style: 'luxury', icon: '💎' }
         ];
 
         function applyFilters() {
-            const ind = document.getElementById('industryFilter').value;
-            const sty = document.getElementById('styleFilter').value;
+            const vert = document.getElementById('verticalFilter').value;
+            const goal = document.getElementById('goalFilter').value;
+            const style = document.getElementById('styleFilter').value;
 
             const filtered = variants.filter(v => {
-                const matchInd = ind === 'all' || v.industry === ind;
-                const matchSty = sty === 'all' || v.style === sty;
-                return matchInd && matchSty;
+                const mV = vert === 'all' || v.vertical === vert;
+                const mG = goal === 'all' || v.goal === goal;
+                const mS = style === 'all' || v.style === style;
+                return mV && mG && mS;
             });
 
             render(filtered);
-            document.getElementById('matchCount').innerText = filtered.length;
+            document.getElementById('statsCount').innerText = `النتائج: ${filtered.length}`;
         }
 
         function render(items) {
             const grid = document.getElementById('templateGrid');
             grid.innerHTML = items.map(v => `
-                <div class="template-card" onclick="openModal('${v.id}', '${v.name}')">
+                <div class="template-card">
                     <div class="preview-box">${v.icon}</div>
                     <div class="card-info">
                         <h3>${v.name}</h3>
-                        <p>قالب هندسي قابل للتخصيص</p>
-                        <div class="tags">
-                            <span class="tag">${v.style}</span>
-                            <span class="tag">${v.industry}</span>
+                        <div class="meta-badges">
+                            <span class="badge vertical">${v.vertical}</span>
+                            <span class="badge goal">${v.goal}</span>
+                            <span class="badge">${v.style}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
-        }
-
-        function openModal(id, name) {
-            document.getElementById('modal').style.display = 'flex';
-            document.getElementById('modalTitle').innerText = name;
-            // Preview logic: normally loads the generated site for this variant
-            alert('يتم الآن تجهيز معاينة القالب: ' + id + '\nيرجى التشغيل من خلال خادم الويب الرئيسي.');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
         }
 
         render(variants);

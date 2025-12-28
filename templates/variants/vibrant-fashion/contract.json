@@ -1,6 +1,7 @@
 {
     "id": "vibrant-fashion",
-    "vertical": "fashion",
+    "vertical": "ecommerce",
+    "goal": "sell",
     "layout": "ecommerce-01",
     "tokenProfile": "vibrant",
     "componentVariants": {

@@ -1,6 +1,7 @@
 {
     "id": "freelancer-modern",
     "vertical": "freelancer",
+    "goal": "collect-leads",
     "layout": "freelancer-01",
     "tokenProfile": "minimalist",
     "componentVariants": {

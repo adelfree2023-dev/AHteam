@@ -1,0 +1,14 @@
+{
+    "id": "portfolio",
+    "personality": "creative, unique, expressive",
+    "allowedComponents": [
+        "header",
+        "hero",
+        "gallery",
+        "testimonials",
+        "contact",
+        "footer"
+    ],
+    "defaultMotion": "artistic",
+    "density": "spacious"
+}

@@ -1,0 +1,19 @@
+{
+    "id": "bold-01",
+    "name": "Bold Impact",
+    "vertical": "general",
+    "requiredComponents": [
+        "header",
+        "hero",
+        "gallery",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "gallery",
+        "testimonials",
+        "booking",
+        "footer"
+    ]
+}
