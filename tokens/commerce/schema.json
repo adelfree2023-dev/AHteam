@@ -1,0 +1,59 @@
+{
+    "version": "1.0.0",
+    "entities": {
+        "Product": {
+            "id": "string",
+            "sku": "string",
+            "name": "string",
+            "slug": "string",
+            "description": "text",
+            "basePrice": "number",
+            "currency": "string",
+            "taxable": "boolean",
+            "inventory": {
+                "track": "boolean",
+                "quantity": "number",
+                "allowBackorder": "boolean"
+            },
+            "variants": [
+                {
+                    "id": "string",
+                    "sku": "string",
+                    "options": {
+                        "color": "string",
+                        "size": "string",
+                        "material": "string"
+                    },
+                    "priceAdjustment": "number",
+                    "inventory": "number"
+                }
+            ],
+            "attributes": "object",
+            "images": [
+                "url"
+            ],
+            "category": "string",
+            "tags": [
+                "string"
+            ],
+            "status": "active | draft | archived"
+        },
+        "Category": {
+            "id": "string",
+            "name": "string",
+            "slug": "string",
+            "parent": "string",
+            "image": "url",
+            "description": "text"
+        },
+        "Promotion": {
+            "id": "string",
+            "code": "string",
+            "type": "percentage | fixed",
+            "value": "number",
+            "target": "all | category | product",
+            "validFrom": "iso-date",
+            "validUntil": "iso-date"
+        }
+    }
+}

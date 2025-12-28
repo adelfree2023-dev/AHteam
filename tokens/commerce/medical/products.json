@@ -1,0 +1,23 @@
+[
+    {
+        "id": "med-001",
+        "name": "General Consultation",
+        "slug": "general-consultation",
+        "basePrice": 150.00,
+        "currency": "USD",
+        "description": "Professional health check and consultation.",
+        "attributes": {
+            "duration": "30 mins",
+            "type": "In-person"
+        },
+        "category": "services"
+    },
+    {
+        "id": "med-002",
+        "name": "Dental Cleaning",
+        "slug": "dental-cleaning",
+        "basePrice": 80.00,
+        "currency": "USD",
+        "category": "services"
+    }
+]

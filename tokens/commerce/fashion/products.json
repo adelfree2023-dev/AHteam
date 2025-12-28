@@ -1,0 +1,55 @@
+[
+    {
+        "id": "fsh-001",
+        "name": "Oversized Cotton Tee",
+        "slug": "oversized-cotton-tee",
+        "basePrice": 29.99,
+        "currency": "USD",
+        "variants": [
+            {
+                "id": "v1",
+                "sku": "TSH-BLK-L",
+                "options": {
+                    "color": "Black",
+                    "size": "L"
+                },
+                "inventory": 50
+            },
+            {
+                "id": "v2",
+                "sku": "TSH-WHT-M",
+                "options": {
+                    "color": "White",
+                    "size": "M"
+                },
+                "inventory": 30
+            }
+        ],
+        "images": [
+            "./assets/images/products/tee-black.jpg"
+        ],
+        "category": "apparel"
+    },
+    {
+        "id": "fsh-002",
+        "name": "Slim Fit Denim",
+        "slug": "slim-fit-denim",
+        "basePrice": 59.99,
+        "currency": "USD",
+        "variants": [
+            {
+                "id": "v1",
+                "sku": "DNM-BLU-32",
+                "options": {
+                    "color": "Blue",
+                    "size": "32"
+                },
+                "inventory": 20
+            }
+        ],
+        "images": [
+            "./assets/images/products/denim-blue.jpg"
+        ],
+        "category": "apparel"
+    }
+]

@@ -18,6 +18,14 @@ import { processFile, shouldProcessFile } from './binder.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// SEO Templates
+const DEFAULT_META = {
+    title: 'AHteam Store',
+    description: 'High-performance commerce experience by AHteam',
+    og_image: './assets/images/logo.png',
+    og_type: 'website'
+};
+
 // Paths
 const ROOT_DIR = path.resolve(__dirname, '../..');
 const CONFIG_PATH = path.join(ROOT_DIR, 'project.config.json');
@@ -279,6 +287,29 @@ function resolveToken(tokenPath) {
  * Resolve a variant with its Layout and Tokens
  * Enforces Immutable Hierarchy: Base -> Layout -> Variant -> Tokens
  */
+/**
+ * Recursive layout search
+ */
+async function findLayout(layoutName) {
+    async function scan(dir) {
+        const entries = await fs.readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                const found = await scan(fullPath);
+                if (found) return found;
+            } else if (entry.name === `${layoutName}.json`) {
+                return JSON.parse(await fs.readFile(fullPath, 'utf-8'));
+            }
+        }
+        return null;
+    }
+    return await scan(path.join(TEMPLATES_DIR, 'layouts'));
+}
+
+/**
+ * Resolve a variant with its Layout and Tokens
+ */
 async function resolveVariant(variantName) {
     const variantDir = path.join(TEMPLATES_DIR, 'variants', variantName);
     const contractPath = path.join(variantDir, 'contract.json');
@@ -295,22 +326,7 @@ async function resolveVariant(variantName) {
     }
 
     // Resolve Layout (Recursive search to support Vertical subdirectories)
-    let layout = null;
-    async function findLayout(dir) {
-        const entries = await fs.readdir(dir, { withFileTypes: true });
-        for (const entry of entries) {
-            const fullPath = path.join(dir, entry.name);
-            if (entry.isDirectory()) {
-                const found = await findLayout(fullPath);
-                if (found) return found;
-            } else if (entry.name === `${variant.layout}.json`) {
-                return JSON.parse(await fs.readFile(fullPath, 'utf-8'));
-            }
-        }
-        return null;
-    }
-
-    layout = await findLayout(path.join(TEMPLATES_DIR, 'layouts'));
+    const layout = await findLayout(variant.layout);
 
     if (!layout) {
         throw new Error(`❌ FAIL-FAST: Layout "${variant.layout}" requested by variant "${variantName}" was not found in any vertical subdirectory.`);
@@ -465,20 +481,57 @@ async function validateVariantContract(variant, layout, config) {
  * Generate a Search Index for the store
  */
 async function generateSearchIndex(products, outputPath) {
-    console.log('   🔍 Generating Search Index...');
-    const index = products.map(p => ({
-        id: p.id,
-        name: p.name,
-        category: p.category,
-        tags: p.tags || [],
-        price: p.price,
-        attributes: p.attributes || {}
-    }));
+    console.log('   🔍 Generating Smart Search Index (Facet-Ready)...');
+
+    // 1. Build Index with Facets
+    const facets = {
+        categories: [...new Set(products.map(p => p.category))],
+        priceRanges: [
+            { label: 'Under $50', min: 0, max: 50 },
+            { label: '$50 - $100', min: 50, max: 100 },
+            { label: 'Over $100', min: 100, max: 1000000 }
+        ],
+        attributes: {} // Collect unique attribute values for filtering
+    };
+
+    const indexRows = products.map(p => {
+        // Collect dynamic facets from attributes
+        if (p.attributes) {
+            Object.entries(p.attributes).forEach(([key, val]) => {
+                if (!facets.attributes[key]) facets.attributes[key] = new Set();
+                if (Array.isArray(val)) val.forEach(v => facets.attributes[key].add(v));
+                else facets.attributes[key].add(val);
+            });
+        }
+
+        return {
+            id: p.id,
+            sku: p.sku,
+            name: p.name,
+            slug: p.slug,
+            category: p.category,
+            basePrice: p.basePrice,
+            image: p.images?.[0] || '',
+            tags: p.tags || [],
+            attributes: p.attributes || {}
+        };
+    });
+
+    // Convert Sets to Arrays for JSON
+    Object.keys(facets.attributes).forEach(k => {
+        facets.attributes[k] = [...facets.attributes[k]];
+    });
+
+    const finalIndex = {
+        generatedAt: new Date().toISOString(),
+        products: indexRows,
+        facets: facets
+    };
 
     const dataDir = path.join(outputPath, 'data');
     await fs.ensureDir(dataDir);
-    await fs.writeFile(path.join(dataDir, 'search-index.json'), JSON.stringify(index, null, 2));
-    console.log('   ✅ search-index.json generated');
+    await fs.writeFile(path.join(dataDir, 'search-index.json'), JSON.stringify(finalIndex, null, 2));
+    console.log('   ✅ Smart Index Generated');
 }
 
 /**
@@ -496,6 +549,10 @@ async function generateDynamicPages(products, layoutName, config, outputPath) {
     const layout = JSON.parse(await fs.readFile(layoutPath, 'utf-8'));
 
     for (const product of products) {
+        // Aliases for legacy template compatibility
+        product.price = product.basePrice;
+        product.image = product.images?.[0] || '';
+
         // Create a local config copy with the current product context
         const pageConfig = {
             ...config,
@@ -536,11 +593,64 @@ async function generateCustomPages(pages, config, outputPath) {
             layout.sections = pageDef.sections;
         }
 
-        const composedHtml = await composePage(layout, config);
-        const finalHtml = processFile(composedHtml, config, `${pageSlug}.html`);
+        const pageConfig = { ...config, _page_slug: pageSlug };
+        const composedHtml = await composePage(layout, pageConfig);
+        const finalHtml = processFile(composedHtml, pageConfig, `${pageSlug}.html`);
         await fs.writeFile(path.join(outputPath, `${pageSlug}.html`), finalHtml);
         console.log(`   ✅ Page: ${pageSlug}.html`);
     }
+}
+
+/**
+ * Generate Category Pages for all unique categories
+ */
+async function generateCategoryPages(products, layoutName, config, outputPath) {
+    const categories = [...new Set(products.map(p => p.category))];
+    console.log(`   📂 Generating Category Pages for ${categories.length} categories...`);
+
+    for (const cat of categories) {
+        const catProducts = products.filter(p => p.category === cat);
+        const pageConfig = {
+            ...config,
+            _current_category: cat,
+            _composed_data: { products: catProducts },
+            project: {
+                ...config.project,
+                title: `${cat.charAt(0).toUpperCase() + cat.slice(1)} - ${config.project?.name || 'Store'}`
+            }
+        };
+
+        // Resolve Layout (Faceted Search)
+        const layout = await findLayout(layoutName);
+        if (!layout) {
+            console.warn(`    ⚠️ Layout not found: ${layoutName}, skipping category pages.`);
+            return;
+        }
+
+        const composedHtml = await composePage(layout, pageConfig);
+        const finalHtml = processFile(composedHtml, pageConfig, `category-${cat}.html`);
+
+        await fs.writeFile(path.join(outputPath, `category-${cat}.html`), finalHtml);
+        console.log(`   ✅ Category Page: category-${cat}.html`);
+    }
+}
+
+/**
+ * Inject SEO Tags into HTML head
+ */
+function injectSEOTags(html, meta) {
+    const tags = `
+    <!-- SEO Hardened -->
+    <title>${meta.title || DEFAULT_META.title}</title>
+    <meta name="description" content="${meta.description || DEFAULT_META.description}">
+    <meta property="og:title" content="${meta.title || DEFAULT_META.title}">
+    <meta property="og:description" content="${meta.description || DEFAULT_META.description}">
+    <meta property="og:image" content="${meta.og_image || DEFAULT_META.og_image}">
+    <meta property="og:type" content="${meta.og_type || DEFAULT_META.og_type}">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="${meta.canonical || ''}">
+    `;
+    return html.replace('</head>', `${tags}\n</head>`);
 }
 
 /**
@@ -556,19 +666,16 @@ async function generateWebsite(config) {
     await fs.ensureDir(websiteOutput);
     await fs.emptyDir(websiteOutput);
 
-    // 1. Data Selection (Verticals)
+    // 1. Data Selection (Universal Commerce Scale)
     let products = [];
-    const vertical = variant.vertical || 'default';
-    const dataPath = path.join(TEMPLATES_DIR, 'base', 'data', `${vertical}.json`);
+    const vertical = variant.vertical;
+    const commercePath = path.join(TOKENS_DIR, 'commerce', vertical, 'products.json');
 
-    if (await fs.pathExists(dataPath)) {
-        console.log(`   📦 Loading Vertical Data: ${vertical}`);
-        products = JSON.parse(await fs.readFile(dataPath, 'utf-8'));
+    if (await fs.pathExists(commercePath)) {
+        console.log(`   📦 Loading Universal Commerce Data: ${vertical}`);
+        products = JSON.parse(await fs.readFile(commercePath, 'utf-8'));
     } else {
-        const legacyData = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001', 'data', 'products.json');
-        if (await fs.pathExists(legacyData)) {
-            products = JSON.parse(await fs.readFile(legacyData, 'utf-8'));
-        }
+        console.warn(`    ⚠️  DATA WARNING: No commerce data found for vertical "${vertical}" at ${commercePath}. Using empty dataset.`);
     }
 
     // Inject products into config for composition
@@ -584,10 +691,14 @@ async function generateWebsite(config) {
     const productLayout = variant.productLayout || 'ecommerce-product';
     await generateDynamicPages(products, productLayout, config, websiteOutput);
 
-    // 4. Custom Pages (Static)
+    // 4. Category Pages
+    const categoryLayout = variant.categoryLayout || 'ecommerce-category';
+    await generateCategoryPages(products, categoryLayout, config, websiteOutput);
+
+    // 5. Custom Pages (Static)
     await generateCustomPages(variant.pages, config, websiteOutput);
 
-    // 5. Search Index Generation
+    // 6. Search Index Generation
     if (variant.features?.search) {
         await generateSearchIndex(products, websiteOutput);
     }

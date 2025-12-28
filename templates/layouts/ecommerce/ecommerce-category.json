@@ -1,0 +1,16 @@
+{
+    "id": "ecommerce-category",
+    "name": "Category Listing",
+    "vertical": "ecommerce",
+    "requiredComponents": [
+        "header",
+        "features",
+        "footer"
+    ],
+    "sections": [
+        "header",
+        "hero",
+        "products",
+        "footer"
+    ]
+}

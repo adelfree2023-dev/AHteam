@@ -1,0 +1,19 @@
+[
+    {
+        "id": "tch-001",
+        "name": "Quantum Pro Headphones",
+        "sku": "HPH-QNT-01",
+        "slug": "quantum-pro-headphones",
+        "basePrice": 299.00,
+        "currency": "USD",
+        "attributes": {
+            "connection": "Wireless",
+            "noise_cancelling": true,
+            "battery": "40h"
+        },
+        "images": [
+            "./assets/images/products/headphones.jpg"
+        ],
+        "category": "electronics"
+    }
+]

@@ -1,0 +1,17 @@
+[
+    {
+        "id": "apparel",
+        "name": "Apparel",
+        "slug": "apparel"
+    },
+    {
+        "id": "electronics",
+        "name": "Electronics",
+        "slug": "electronics"
+    },
+    {
+        "id": "services",
+        "name": "Services",
+        "slug": "services"
+    }
+]
