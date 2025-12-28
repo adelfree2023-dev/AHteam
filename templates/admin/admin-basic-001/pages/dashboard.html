@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | {{project.name}}</title>
+
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="{{branding.logo.primary}}" alt="{{project.name}}" class="sidebar-logo">
+                <h2>{{project.name}}</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="./dashboard.html" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>لوحة التحكم</span>
+                </a>
+                <a href="./content.html" class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    <span>المحتوى</span>
+                </a>
+                <a href="./settings.html" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>الإعدادات</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="Auth.logout()" class="btn btn-outline btn-sm">
+                    تسجيل الخروج
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>لوحة التحكم</h1>
+                <div class="header-user">
+                    <span>مرحباً، <strong id="currentUser">Admin</strong></span>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏪</div>
+                        <div class="stat-info">
+                            <h3>المتجر</h3>
+                            <p id="storeName">{{business.name}}</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-info">
+                            <h3>البريد</h3>
+                            <p id="storeEmail">{{business.email}}</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📞</div>
+                        <div class="stat-info">
+                            <h3>الهاتف</h3>
+                            <p id="storePhone">{{business.phone}}</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💱</div>
+                        <div class="stat-info">
+                            <h3>العملة</h3>
+                            <p id="storeCurrency">{{business.currency.code}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="section">
+                    <h2>إجراءات سريعة</h2>
+                    <div class="actions-grid">
+                        <a href="./content.html" class="action-card">
+                            <span class="action-icon">📝</span>
+                            <h3>تعديل المحتوى</h3>
+                            <p>عدّل النصوص والصور</p>
+                        </a>
+                        <a href="./settings.html" class="action-card">
+                            <span class="action-icon">⚙️</span>
+                            <h3>الإعدادات</h3>
+                            <p>إعدادات المتجر</p>
+                        </a>
+                        <a href="./settings.html#branding" class="action-card">
+                            <span class="action-icon">🎨</span>
+                            <h3>الهوية البصرية</h3>
+                            <p>الألوان والشعار</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Config Info -->
+                <div class="section">
+                    <h2>معلومات الإعدادات</h2>
+                    <div class="info-box">
+                        <p><strong>ملف الإعدادات:</strong> project.config.json</p>
+                        <p><strong>الإصدار:</strong> {{project.version}}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/admin.js"></script>
+    <script>
+        // Check auth
+        Auth.requireAuth();
+        document.getElementById('currentUser').textContent = Auth.getCurrentUser();
+    </script>
+</body>
+
+</html>

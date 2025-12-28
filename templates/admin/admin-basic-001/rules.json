@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0",
+    "forbidden": [
+        "externalApiCalls",
+        "platformAuth",
+        "multiTenantLogic",
+        "subscriptionLogic",
+        "centralAnalytics",
+        "autoUpdate",
+        "factoryConnection"
+    ],
+    "allowed": [
+        "localAuth",
+        "configEditing",
+        "localStorage",
+        "simpleValidation",
+        "uiForms"
+    ],
+    "exportable": true,
+    "standalone": true
+}

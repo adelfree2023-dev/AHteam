@@ -1,0 +1,542 @@
+/**
+ * ============================================
+ * AHteam Admin Panel - Styles
+ * ============================================
+ */
+
+/* ==========================================
+   Variables
+   ========================================== */
+:root {
+    --admin-primary: {
+            {
+            branding.colors.primary
+        }
+    }
+
+    ;
+
+    --admin-secondary: {
+            {
+            branding.colors.secondary
+        }
+    }
+
+    ;
+
+    --admin-accent: {
+            {
+            branding.colors.accent
+        }
+    }
+
+    ;
+    --admin-bg: #f8fafc;
+    --admin-sidebar: #1e293b;
+    --admin-text: #334155;
+    --admin-text-light: #64748b;
+    --admin-border: #e2e8f0;
+    --admin-white: #ffffff;
+    --admin-success: #22c55e;
+    --admin-error: #ef4444;
+    --admin-warning: #f59e0b;
+
+    --sidebar-width: 260px;
+    --header-height: 64px;
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================
+   Base
+   ========================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ==========================================
+   Login Page
+   ========================================== */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--admin-sidebar) 0%, #0f172a 100%);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 1rem;
+}
+
+.login-box {
+    background: var(--admin-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+.login-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--admin-text);
+}
+
+.login-header p {
+    color: var(--admin-text-light);
+    font-size: 0.875rem;
+}
+
+.login-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form input[type="email"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.error-message {
+    background: #fef2f2;
+    color: var(--admin-error);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.success-message {
+    background: #f0fdf4;
+    color: var(--admin-success);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.login-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--admin-border);
+    text-align: center;
+}
+
+.login-footer p {
+    font-size: 0.75rem;
+    color: var(--admin-text-light);
+    margin-bottom: 0.5rem;
+}
+
+.login-footer code {
+    background: var(--admin-bg);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+/* ==========================================
+   Admin Layout
+   ========================================== */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: var(--sidebar-width);
+    background: var(--admin-sidebar);
+    color: var(--admin-white);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    right: 0;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.sidebar-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 0.25rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--admin-white);
+}
+
+.nav-icon {
+    font-size: 1.25rem;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Main Content */
+.admin-main {
+    flex: 1;
+    margin-right: var(--sidebar-width);
+}
+
+.admin-header {
+    background: var(--admin-white);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.admin-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.header-user {
+    color: var(--admin-text-light);
+    font-size: 0.875rem;
+}
+
+.admin-content {
+    padding: 2rem;
+}
+
+/* ==========================================
+   Stats Cards
+   ========================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--admin-white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-info h3 {
+    font-size: 0.75rem;
+    color: var(--admin-text-light);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.stat-info p {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* ==========================================
+   Actions Grid
+   ========================================== */
+.section {
+    margin-bottom: 2rem;
+}
+
+.section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.action-card {
+    background: var(--admin-white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.action-card:hover {
+    border-color: var(--admin-primary);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.action-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.action-card p {
+    font-size: 0.875rem;
+    color: var(--admin-text-light);
+}
+
+/* ==========================================
+   Info Box
+   ========================================== */
+.info-box {
+    background: var(--admin-white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    border-right: 4px solid var(--admin-primary);
+}
+
+.info-box p {
+    margin-bottom: 0.5rem;
+}
+
+.info-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================
+   Forms
+   ========================================== */
+.settings-form {
+    max-width: 800px;
+}
+
+.form-section {
+    background: var(--admin-white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.form-section h2 {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="url"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+}
+
+.color-input {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.color-input input[type="color"] {
+    width: 50px;
+    height: 40px;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.color-input input[type="text"] {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+/* ==========================================
+   Buttons
+   ========================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--admin-primary);
+    color: var(--admin-white);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--admin-border);
+    color: var(--admin-text);
+}
+
+.btn-outline:hover {
+    background: var(--admin-bg);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        display: none;
+    }
+
+    .admin-main {
+        margin-right: 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}

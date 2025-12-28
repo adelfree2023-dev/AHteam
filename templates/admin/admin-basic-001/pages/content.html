@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحتوى | {{project.name}}</title>
+
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="{{branding.logo.primary}}" alt="{{project.name}}" class="sidebar-logo">
+                <h2>{{project.name}}</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="./dashboard.html" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>لوحة التحكم</span>
+                </a>
+                <a href="./content.html" class="nav-item active">
+                    <span class="nav-icon">📝</span>
+                    <span>المحتوى</span>
+                </a>
+                <a href="./settings.html" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>الإعدادات</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="Auth.logout()" class="btn btn-outline btn-sm">
+                    تسجيل الخروج
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>المحتوى</h1>
+            </header>
+
+            <div class="admin-content">
+                <form id="contentForm" class="settings-form">
+
+                    <!-- Hero Section -->
+                    <section class="form-section">
+                        <h2>القسم الرئيسي (Hero)</h2>
+
+                        <div class="form-group">
+                            <label for="heroTitle">العنوان الرئيسي</label>
+                            <input type="text" id="heroTitle" name="content.homepage.hero.title"
+                                value="{{content.homepage.hero.title}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="heroSubtitle">العنوان الفرعي</label>
+                            <input type="text" id="heroSubtitle" name="content.homepage.hero.subtitle"
+                                value="{{content.homepage.hero.subtitle}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="heroCta">نص الزر</label>
+                            <input type="text" id="heroCta" name="content.homepage.hero.cta"
+                                value="{{content.homepage.hero.cta}}">
+                        </div>
+                    </section>
+
+                    <!-- About Section -->
+                    <section class="form-section">
+                        <h2>صفحة من نحن</h2>
+
+                        <div class="form-group">
+                            <label for="aboutTitle">العنوان</label>
+                            <input type="text" id="aboutTitle" name="content.about.title"
+                                value="{{content.about.title}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="aboutDescription">الوصف</label>
+                            <textarea id="aboutDescription" name="content.about.description"
+                                rows="4">{{content.about.description}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="aboutMission">الرسالة</label>
+                            <textarea id="aboutMission" name="content.about.mission"
+                                rows="2">{{content.about.mission}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="aboutVision">الرؤية</label>
+                            <textarea id="aboutVision" name="content.about.vision"
+                                rows="2">{{content.about.vision}}</textarea>
+                        </div>
+                    </section>
+
+                    <!-- Contact Section -->
+                    <section class="form-section">
+                        <h2>صفحة التواصل</h2>
+
+                        <div class="form-group">
+                            <label for="contactTitle">العنوان</label>
+                            <input type="text" id="contactTitle" name="content.contact.title"
+                                value="{{content.contact.title}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactDescription">الوصف</label>
+                            <textarea id="contactDescription" name="content.contact.description"
+                                rows="2">{{content.contact.description}}</textarea>
+                        </div>
+                    </section>
+
+                    <!-- Footer -->
+                    <section class="form-section">
+                        <h2>الفوتر</h2>
+
+                        <div class="form-group">
+                            <label for="footerCopyright">نص حقوق النشر</label>
+                            <input type="text" id="footerCopyright" name="content.footer.copyright"
+                                value="{{content.footer.copyright}}">
+                        </div>
+                    </section>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                        <button type="button" class="btn btn-outline" onclick="location.reload()">إلغاء</button>
+                    </div>
+                </form>
+
+                <div id="saveMessage" class="success-message" style="display: none;">
+                    تم حفظ التغييرات بنجاح!
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/config-editor.js"></script>
+    <script>
+        Auth.requireAuth();
+
+        document.getElementById('contentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            ConfigEditor.saveForm(this);
+            document.getElementById('saveMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('saveMessage').style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>

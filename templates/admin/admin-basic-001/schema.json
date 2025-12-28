@@ -1,0 +1,13 @@
+{
+    "$description": "Configuration requirements for admin-basic-001",
+    "required": [
+        "project.name",
+        "business.name",
+        "business.email"
+    ],
+    "optional": [
+        "branding.logo.primary",
+        "branding.colors.primary",
+        "branding.colors.secondary"
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "$schema": "../../template.manifest.schema.json",
+    "id": "admin-basic-001",
+    "name": "Basic Admin Panel",
+    "description": "لوحة تحكم أساسية مع مصادقة محلية",
+    "type": "admin",
+    "category": "basic-crud",
+    "version": "1.0.0",
+    "author": "AHteam",
+    "createdAt": "2025-12-28",
+    "supports": {
+        "rtl": true,
+        "languages": [
+            "ar",
+            "en"
+        ],
+        "darkMode": true,
+        "responsive": true,
+        "features": [
+            "localAuth",
+            "configEditor",
+            "dashboard"
+        ]
+    },
+    "preview": "assets/preview.png",
+    "pages": [
+        "login",
+        "dashboard",
+        "settings",
+        "content"
+    ]
+}

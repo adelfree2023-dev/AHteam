@@ -1,13 +1,11 @@
 /**
  * ============================================
- * AHteam Generator - Main Entry Point
+ * AHteam Generator - Main Entry Point (Updated)
  * ============================================
  * 
- * Generates standalone website from:
- * - project.config.json
- * - Website Template
- * 
- * Output: /generated/website
+ * Generates:
+ * - Website from templates/website
+ * - Admin from templates/admin
  * ============================================
  */
 
@@ -30,62 +28,103 @@ const OUTPUT_DIR = path.join(ROOT_DIR, 'generated');
  * Main generator function
  */
 async function generate() {
-    console.log('🏭 AHteam Generator v1.0.0\n');
+    console.log('🏭 AHteam Generator v1.1.0\n');
     console.log('================================\n');
 
-    // Step 1: Validate Contract
-    console.log('📋 Step 1: Validate Contract');
-    const templatePath = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001');
-    const validation = validate(CONFIG_PATH, templatePath);
+    // Load config
+    const config = JSON.parse(await fs.readFile(CONFIG_PATH, 'utf-8'));
 
-    if (!validation.valid) {
-        console.log('\n❌ Generation stopped: Contract validation failed');
-        process.exit(1);
+    // Generate Website if enabled
+    if (config.features?.website?.enabled) {
+        console.log('📄 Generating Website...\n');
+        await generateWebsite(config);
     }
 
-    const config = validation.config;
-
-    // Step 2: Prepare output directory
-    console.log('📁 Step 2: Prepare Output Directory');
-    const websiteOutput = path.join(OUTPUT_DIR, 'website');
-    await fs.ensureDir(websiteOutput);
-    await fs.emptyDir(websiteOutput);
-    console.log(`   Output: ${websiteOutput}\n`);
-
-    // Step 3: Copy and process template files
-    console.log('🔧 Step 3: Generate Website');
-    await generateWebsite(config, templatePath, websiteOutput);
-
-    // Step 4: Generate additional files
-    console.log('\n📝 Step 4: Generate Documentation');
-    await generateDocs(config, websiteOutput);
-
-    // Step 5: Create package.json for generated project
-    console.log('\n📦 Step 5: Create Project Files');
-    await generateProjectFiles(config, websiteOutput);
+    // Generate Admin if enabled
+    if (config.features?.admin?.enabled) {
+        console.log('\n📊 Generating Admin Panel...\n');
+        await generateAdmin(config);
+    } else {
+        // Always generate admin for now
+        console.log('\n📊 Generating Admin Panel...\n');
+        await generateAdmin(config);
+    }
 
     console.log('\n================================');
-    console.log('✅ Generation Complete!\n');
-    console.log(`📁 Output: ${websiteOutput}`);
-    console.log('\nNext steps:');
-    console.log('  cd generated/website');
-    console.log('  npm install');
-    console.log('  npm run dev');
+    console.log('✅ All Generation Complete!\n');
+    console.log(`📁 Website: ${path.join(OUTPUT_DIR, 'website')}`);
+    console.log(`📁 Admin: ${path.join(OUTPUT_DIR, 'admin')}`);
     console.log('');
 }
 
 /**
- * Generate website from template
+ * Generate Website
  */
-async function generateWebsite(config, templatePath, outputPath) {
-    // Copy pages
+async function generateWebsite(config) {
+    const templatePath = path.join(TEMPLATES_DIR, 'website', 'web-ecommerce-001');
+    const websiteOutput = path.join(OUTPUT_DIR, 'website');
+
+    // Validate
+    const validation = validate(CONFIG_PATH, templatePath);
+    if (!validation.valid) {
+        console.log('❌ Website validation failed');
+        return;
+    }
+
+    // Prepare output
+    await fs.ensureDir(websiteOutput);
+    await fs.emptyDir(websiteOutput);
+
+    // Copy and process pages
     const pagesDir = path.join(templatePath, 'pages');
     if (await fs.pathExists(pagesDir)) {
         const pages = await fs.readdir(pagesDir);
         for (const page of pages) {
             const sourcePath = path.join(pagesDir, page);
-            const destPath = path.join(outputPath, page);
+            const destPath = path.join(websiteOutput, page);
+            let content = await fs.readFile(sourcePath, 'utf-8');
+            content = processFile(content, config, page);
+            await fs.writeFile(destPath, content);
+            console.log(`   ✅ ${page}`);
+        }
+    }
 
+    // Copy assets
+    const assetsDir = path.join(templatePath, 'assets');
+    if (await fs.pathExists(assetsDir)) {
+        await copyAndProcessDir(assetsDir, path.join(websiteOutput, 'assets'), config);
+        console.log('   ✅ assets/');
+    }
+
+    // Copy data
+    const dataDir = path.join(templatePath, 'data');
+    if (await fs.pathExists(dataDir)) {
+        await fs.copy(dataDir, path.join(websiteOutput, 'data'));
+        console.log('   ✅ data/');
+    }
+
+    // Generate docs
+    await generateWebsiteDocs(config, websiteOutput);
+}
+
+/**
+ * Generate Admin Panel
+ */
+async function generateAdmin(config) {
+    const templatePath = path.join(TEMPLATES_DIR, 'admin', 'admin-basic-001');
+    const adminOutput = path.join(OUTPUT_DIR, 'admin');
+
+    // Prepare output
+    await fs.ensureDir(adminOutput);
+    await fs.emptyDir(adminOutput);
+
+    // Copy and process pages
+    const pagesDir = path.join(templatePath, 'pages');
+    if (await fs.pathExists(pagesDir)) {
+        const pages = await fs.readdir(pagesDir);
+        for (const page of pages) {
+            const sourcePath = path.join(pagesDir, page);
+            const destPath = path.join(adminOutput, page);
             let content = await fs.readFile(sourcePath, 'utf-8');
             content = processFile(content, config, page);
             await fs.writeFile(destPath, content);
@@ -96,16 +135,12 @@ async function generateWebsite(config, templatePath, outputPath) {
     // Copy and process assets
     const assetsDir = path.join(templatePath, 'assets');
     if (await fs.pathExists(assetsDir)) {
-        await copyAndProcessDir(assetsDir, path.join(outputPath, 'assets'), config);
+        await copyAndProcessDir(assetsDir, path.join(adminOutput, 'assets'), config);
         console.log('   ✅ assets/');
     }
 
-    // Copy data
-    const dataDir = path.join(templatePath, 'data');
-    if (await fs.pathExists(dataDir)) {
-        await fs.copy(dataDir, path.join(outputPath, 'data'));
-        console.log('   ✅ data/');
-    }
+    // Generate admin docs
+    await generateAdminDocs(config, adminOutput);
 }
 
 /**
@@ -113,7 +148,6 @@ async function generateWebsite(config, templatePath, outputPath) {
  */
 async function copyAndProcessDir(sourceDir, destDir, config) {
     await fs.ensureDir(destDir);
-
     const items = await fs.readdir(sourceDir, { withFileTypes: true });
 
     for (const item of items) {
@@ -135,108 +169,61 @@ async function copyAndProcessDir(sourceDir, destDir, config) {
 }
 
 /**
- * Generate documentation files
+ * Generate Website docs
  */
-async function generateDocs(config, outputPath) {
-    // README.md
-    const readme = `# ${config.project.name}
+async function generateWebsiteDocs(config, outputPath) {
+    const readme = `# ${config.project.name} - Website
 
-> ${config.business.name} - Marketing Website
-
-## 🚀 Quick Start
-
+## Quick Start
 \`\`\`bash
-# Open in browser
-open index.html
-\`\`\`
-
-## 📁 Structure
-
-\`\`\`
-├── index.html       # Home page
-├── products.html    # Products page
-├── about.html       # About page
-├── contact.html     # Contact page
-├── cart.html        # Shopping cart
-├── assets/
-│   ├── css/         # Stylesheets
-│   ├── js/          # JavaScript
-│   └── images/      # Images
-└── data/
-    └── sample.json  # Sample data
-\`\`\`
-
-## 📧 Contact
-
-- Email: ${config.business.email}
-- Phone: ${config.business.phone}
-
----
-
-Generated by AHteam Factory
-`;
-
-    await fs.writeFile(path.join(outputPath, 'README.md'), readme);
-    console.log('   ✅ README.md');
-
-    // Build Instructions
-    const buildInstructions = `# Build Instructions
-
-## For Static Hosting
-
-This website is fully static and can be hosted on any static hosting service.
-
-### Option 1: Direct Upload
-
-Simply upload all files to your hosting provider:
-- Netlify
-- Vercel
-- GitHub Pages
-- Any Apache/Nginx server
-
-### Option 2: Local Server
-
-\`\`\`bash
-# Using Python
-python -m http.server 8000
-
-# Using Node.js
+# Serve locally
 npx serve .
 \`\`\`
 
-## Configuration
+## Files
+- index.html - Home page
+- products.html - Products
+- cart.html - Shopping cart
+- about.html - About us
+- contact.html - Contact
 
-All configuration is baked into the files during generation.
-To change settings, regenerate the website with updated project.config.json.
-
-## No Backend Required
-
-This website:
-- ✅ Works without a server
-- ✅ No database needed
-- ✅ No API dependencies
-- ✅ Fully standalone
-
----
-
-Generated: ${new Date().toISOString()}
+## Generated by AHteam Factory
 `;
-
-    await fs.writeFile(path.join(outputPath, 'BUILD_INSTRUCTIONS.md'), buildInstructions);
-    console.log('   ✅ BUILD_INSTRUCTIONS.md');
+    await fs.writeFile(path.join(outputPath, 'README.md'), readme);
+    console.log('   ✅ README.md');
 }
 
 /**
- * Generate project configuration files
+ * Generate Admin docs
  */
-async function generateProjectFiles(config, outputPath) {
-    // .gitignore
-    const gitignore = `node_modules/
-.DS_Store
-*.log
+async function generateAdminDocs(config, outputPath) {
+    const readme = `# ${config.project.name} - Admin Panel
+
+## Quick Start
+\`\`\`bash
+# Serve locally
+npx serve -p 3001 .
+\`\`\`
+
+## Login
+- Username: admin
+- Password: admin123
+
+## Pages
+- login.html - Login page
+- dashboard.html - Dashboard
+- content.html - Edit content
+- settings.html - Store settings
+
+## Features
+- ✅ Local Authentication
+- ✅ Config Editor
+- ✅ No external dependencies
+
+## Generated by AHteam Factory
 `;
-    await fs.writeFile(path.join(outputPath, '.gitignore'), gitignore);
-    console.log('   ✅ .gitignore');
+    await fs.writeFile(path.join(outputPath, 'README.md'), readme);
+    console.log('   ✅ README.md');
 }
 
 // Run generator
