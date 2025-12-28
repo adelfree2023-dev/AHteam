@@ -177,7 +177,7 @@
     "features": {
         "website": {
             "enabled": true,
-            "template_variant": "electronics-pro",
+            "template_variant": "store-pro",
             "pages": {
                 "home": true,
                 "products": true,

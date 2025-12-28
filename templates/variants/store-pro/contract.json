@@ -1,0 +1,18 @@
+{
+    "designId": "store-professional-sell-01",
+    "id": "store-pro",
+    "name": "متجر احترافي",
+    "vertical": "ecommerce",
+    "goal": "sell",
+    "layout": "ecommerce-landing",
+    "tokenProfile": "professional",
+    "quality_approved": true,
+    "componentVariants": {
+        "hero": "centered",
+        "header": "sticky"
+    },
+    "features": {
+        "search": true,
+        "filters": true
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "id": "professional",
+    "name": "Professional",
+    "description": "Clean, conversion-focused design for sales",
+    "supportedVerticals": [
+        "ecommerce",
+        "restaurant",
+        "supermarket",
+        "fashion",
+        "realestate"
+    ],
+    "allowedComponents": [
+        "header",
+        "hero",
+        "featured-products",
+        "features",
+        "footer",
+        "search"
+    ]
+}

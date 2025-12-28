@@ -1,6 +1,0 @@
-{
-    "blur": "12px",
-    "opacity": "0.1",
-    "border": "1px solid rgba(255, 255, 255, 0.1)",
-    "gradient": "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0))"
-}

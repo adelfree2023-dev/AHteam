@@ -1,5 +1,0 @@
-{
-    "primary": "linear-gradient(90deg, #ff0080, #7928ca)",
-    "secondary": "linear-gradient(135deg, #0070f3, #00dfd8)",
-    "complex": "radial-gradient(circle, #ff0080 0%, #7928ca 100%)"
-}
