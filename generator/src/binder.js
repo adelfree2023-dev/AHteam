@@ -122,10 +122,23 @@ export function processFile(content, config, filePath) {
         if (!Array.isArray(list)) return '';
 
         return list.map(item => {
-            // Bind item values into the template
             let itemHtml = template;
-            const itemRegex = /\{\{item\.([^}]+)\}\}/g;
-            return itemHtml.replace(itemRegex, (m, key) => getValueByPath(item, key.trim()) || '');
+
+            // Bind item values: Support both {{item.key}} and {{key}}
+            const tokens = findTokens(itemHtml);
+            for (const token of tokens) {
+                let key = token.path;
+                if (key.startsWith('item.')) {
+                    key = key.replace('item.', '');
+                }
+
+                const value = getValueByPath(item, key);
+                if (value !== undefined && value !== null) {
+                    const stringValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
+                    itemHtml = itemHtml.replace(token.full, stringValue);
+                }
+            }
+            return itemHtml;
         }).join('');
     });
 
