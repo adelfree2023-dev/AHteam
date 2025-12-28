@@ -11,6 +11,8 @@
     ],
     "allowedComponents": [
         "header",
+        "search-bar",
+        "categories-bar",
         "hero",
         "featured-products",
         "features",

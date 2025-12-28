@@ -1,0 +1,13 @@
+{
+    "id": "search-bar",
+    "name": "Search Bar",
+    "description": "Full-width search input for product discovery",
+    "variants": [
+        "default"
+    ],
+    "requiredTokens": [
+        "colors.background",
+        "colors.surface",
+        "colors.text"
+    ]
+}

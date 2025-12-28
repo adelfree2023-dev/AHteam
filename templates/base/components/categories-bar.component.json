@@ -1,0 +1,13 @@
+{
+    "id": "categories-bar",
+    "name": "Categories Bar",
+    "description": "Horizontal scrollable category navigation pills",
+    "variants": [
+        "default"
+    ],
+    "requiredTokens": [
+        "colors.surface",
+        "colors.primary",
+        "colors.text"
+    ]
+}
