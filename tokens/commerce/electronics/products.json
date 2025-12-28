@@ -11,9 +11,7 @@
             "noise_cancelling": true,
             "battery": "40h"
         },
-        "images": [
-            "./assets/images/products/headphones.jpg"
-        ],
+        "images": [],
         "category": "electronics"
     }
 ]
