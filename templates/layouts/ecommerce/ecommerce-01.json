@@ -4,12 +4,16 @@
     "vertical": "ecommerce",
     "requiredComponents": [
         "header",
+        "search-bar",
+        "categories-bar",
         "hero",
         "featured-products",
         "footer"
     ],
     "sections": [
         "header",
+        "search-bar",
+        "categories-bar",
         "hero",
         "featured-products",
         "footer"
