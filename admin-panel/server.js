@@ -179,6 +179,21 @@ app.get('/api/logs', async (req, res) => {
             }
         }
 
+        // Add analytics events to logs
+        const ANALYTICS_FILE = path.join(FACTORY_DIR, 'analytics.json');
+        if (await fs.pathExists(ANALYTICS_FILE)) {
+            const data = JSON.parse(await fs.readFile(ANALYTICS_FILE, 'utf-8'));
+            if (data.funnel) {
+                for (const event of data.funnel.slice(-20)) {
+                    logs.push({
+                        type: 'info',
+                        message: `Funnel: ${event.event}`,
+                        timestamp: event.timestamp
+                    });
+                }
+            }
+        }
+
         res.json(logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
     } catch (error) {
         res.status(500).json({ error: error.message });

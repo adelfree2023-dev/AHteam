@@ -217,6 +217,11 @@ app.use('/preview/:trialId/', async (req, res, next) => {
     `);
     }
 
+    // Funnel: Preview Viewed (only track main HTML requests, not assets)
+    if (req.path === '/' || req.path === '/index.html' || req.path === '/admin/login.html') {
+        await logEvent('previewsViewed');
+    }
+
     next();
 });
 
