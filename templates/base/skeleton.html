@@ -7,38 +7,57 @@
     <title>{{meta.seo.title}} | {{project.name}}</title>
     <meta name="description" content="{{meta.seo.description}}">
 
+    <!-- Dynamic Assets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
     <!-- Token-based Styles -->
     <style>
         :root {
-            /* Basic Theme Variables (Mapped from Design Tokens) */
-            --primary: [[colors.primary]];
-            --secondary: [[colors.secondary]];
-            --accent: [[colors.accent]];
-            --background: [[colors.background]];
-            --surface: [[colors.surface]];
-            --text: [[colors.text]];
-            --text-muted: [[colors.text_muted]];
+            /* Design Tokens Bridge (Luxury WoW) */
+            --color-primary: [[colors.primary]];
+            --color-secondary: [[colors.secondary]];
+            --color-accent: [[colors.accent]];
+            --color-background: [[colors.background]];
+            --color-surface: [[colors.surface]];
+            --color-text: [[colors.text]];
+            --color-text-muted: [[colors.text_muted]];
+            --color-border: [[colors.border]];
 
+            /* Modern Shortnames */
+            --primary: var(--color-primary);
+            --secondary: var(--color-secondary);
+            --accent: var(--color-accent);
+            --background: var(--color-background);
+            --surface: var(--color-surface);
+            --text: var(--color-text);
+
+            /* Typography */
             --font-heading: '[[fonts.heading]]', sans-serif;
             --font-body: '[[fonts.body]]', sans-serif;
 
+            /* Spacing Hierarchy */
             --spacing-xs: [[spacing.xs]];
             --spacing-sm: [[spacing.sm]];
             --spacing-md: [[spacing.md]];
             --spacing-lg: [[spacing.lg]];
             --spacing-xl: [[spacing.xl]];
 
+            /* Polish */
             --radius-md: [[radius.md]];
             --radius-lg: [[radius.lg]];
-
             --shadow-md: [[shadows.md]];
             --shadow-lg: [[shadows.lg]];
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
             font-family: var(--font-body);
-            background: var(--background);
-            color: var(--text);
+            background-color: var(--color-background);
+            color: var(--color-text);
             margin: 0;
             line-height: 1.6;
         }

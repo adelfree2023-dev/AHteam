@@ -15,9 +15,9 @@
     },
     "branding": {
         "logo": {
-            "primary": "./assets/images/logo.png",
-            "secondary": "./assets/images/logo-white.png",
-            "favicon": "./assets/images/favicon.png"
+            "primary": "https://img.freepik.com/free-vector/tech-logo-template_23-2148247072.jpg",
+            "secondary": "https://img.freepik.com/free-vector/tech-logo-template_23-2148247072.jpg",
+            "favicon": "https://img.freepik.com/free-vector/tech-logo-template_23-2148247072.jpg"
         },
         "colors": {
             "primary": "#2563eb",
@@ -73,7 +73,7 @@
             "title": "أهلاً بك في متجر التقوى",
             "subtitle": "تسوق أفضل المنتجات بأسعار منافسة",
             "cta": "تصفح المنتجات",
-            "image": "./assets/images/hero-bg.jpg"
+            "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2000"
         },
         "features": [
             {
