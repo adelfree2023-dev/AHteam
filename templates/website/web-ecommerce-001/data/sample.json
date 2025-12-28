@@ -1,0 +1,49 @@
+{
+    "products": [
+        {
+            "id": "prod-001",
+            "name": "منتج تجريبي 1",
+            "slug": "product-1",
+            "description": "وصف المنتج التجريبي الأول",
+            "price": 299.99,
+            "image": "./assets/images/products/product-1.jpg",
+            "category": "cat-001",
+            "inStock": true,
+            "featured": true
+        },
+        {
+            "id": "prod-002",
+            "name": "منتج تجريبي 2",
+            "slug": "product-2",
+            "description": "وصف المنتج التجريبي الثاني",
+            "price": 199.99,
+            "image": "./assets/images/products/product-2.jpg",
+            "category": "cat-001",
+            "inStock": true,
+            "featured": true
+        },
+        {
+            "id": "prod-003",
+            "name": "منتج تجريبي 3",
+            "slug": "product-3",
+            "description": "وصف المنتج التجريبي الثالث",
+            "price": 499.99,
+            "image": "./assets/images/products/product-3.jpg",
+            "category": "cat-002",
+            "inStock": true,
+            "featured": false
+        }
+    ],
+    "categories": [
+        {
+            "id": "cat-001",
+            "name": "الفئة الأولى",
+            "slug": "category-1"
+        },
+        {
+            "id": "cat-002",
+            "name": "الفئة الثانية",
+            "slug": "category-2"
+        }
+    ]
+}

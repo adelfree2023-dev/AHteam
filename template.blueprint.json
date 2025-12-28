@@ -1,0 +1,126 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://ahteam.dev/schemas/template.blueprint.json",
+    "$version": "1.0.0",
+    "$locked": true,
+    "$lockDate": "2025-12-28",
+    "title": "AHteam Template Blueprint Contract",
+    "description": "العقد الرسمي الذي يحكم كل Template في المصنع",
+    "structure": {
+        "required": [
+            "manifest.json",
+            "schema.json",
+            "rules.json",
+            "bindings/",
+            "assets/",
+            "layout/"
+        ],
+        "description": "أي Template يفتقد أي عنصر = مرفوض"
+    },
+    "manifest": {
+        "required": [
+            "id",
+            "type",
+            "category",
+            "version",
+            "supports"
+        ],
+        "id": {
+            "type": "string",
+            "pattern": "^[a-z]+-[a-z]+-[0-9]{3}$",
+            "description": "معرف فريد: web-landing-001, admin-crud-001"
+        },
+        "type": {
+            "enum": [
+                "website",
+                "admin",
+                "android"
+            ],
+            "description": "نوع واحد فقط - لا templates متعددة الأغراض"
+        },
+        "category": {
+            "website": [
+                "landing",
+                "business",
+                "portfolio",
+                "ecommerce"
+            ],
+            "admin": [
+                "basic-crud",
+                "local-auth",
+                "role-based"
+            ],
+            "android": [
+                "webview-based",
+                "config-driven",
+                "standalone"
+            ]
+        }
+    },
+    "schema": {
+        "required": {
+            "type": "array",
+            "description": "مفاتيح project.config.json المطلوبة"
+        },
+        "optional": {
+            "type": "array",
+            "description": "مفاتيح project.config.json الاختيارية"
+        },
+        "rules": [
+            "لا مفاتيح خارج project.config.json",
+            "نقص البيانات = رفض قبل التوليد"
+        ]
+    },
+    "bindings": {
+        "syntax": "{{path.to.value}}",
+        "forbidden": [
+            "if/else conditions",
+            "loops/iterations",
+            "expressions/calculations",
+            "function calls"
+        ],
+        "allowed": [
+            "direct binding only",
+            "simple path access"
+        ]
+    },
+    "rules": {
+        "forbidden": [
+            "externalApiCalls",
+            "platformAuth",
+            "backendDependencies",
+            "hardcodedSecrets",
+            "hardcodedColors",
+            "hardcodedText",
+            "analyticsDependencies",
+            "packageImports"
+        ],
+        "required": {
+            "exportable": true,
+            "standalone": true
+        }
+    },
+    "validation": {
+        "beforeGeneration": [
+            "manifest.json exists and valid",
+            "schema.json exists and valid",
+            "rules.json exists and valid",
+            "all required config keys present",
+            "no forbidden patterns in code"
+        ],
+        "afterGeneration": [
+            "no broken bindings",
+            "no external dependencies",
+            "works offline"
+        ]
+    },
+    "enforcement": {
+        "violations": {
+            "missingFile": "REJECT - Template incomplete",
+            "invalidManifest": "REJECT - Invalid identity",
+            "forbiddenPattern": "REJECT - Contract violation",
+            "missingConfigKey": "REJECT - Fail fast"
+        },
+        "exceptions": "NONE - No exceptions allowed"
+    }
+}
