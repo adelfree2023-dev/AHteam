@@ -1,0 +1,10 @@
+{
+    "id": "luxury-electronics",
+    "vertical": "electronics",
+    "layout": "ecommerce-02",
+    "tokenProfile": "luxury.dark-gold",
+    "componentVariants": {
+        "header": "fixed",
+        "hero": "video"
+    }
+}

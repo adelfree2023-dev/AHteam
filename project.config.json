@@ -123,6 +123,55 @@
         "footer": {
             "copyright": "© 2025 متجر التقوى. جميع الحقوق محفوظة.",
             "links": []
+        },
+        "gallery": {
+            "title": "معرض منتجاتنا",
+            "items": [
+                {
+                    "image": "./assets/images/gallery/1.jpg",
+                    "title": "منتج 1"
+                },
+                {
+                    "image": "./assets/images/gallery/2.jpg",
+                    "title": "منتج 2"
+                },
+                {
+                    "image": "./assets/images/gallery/3.jpg",
+                    "title": "منتج 3"
+                }
+            ]
+        },
+        "pricing": {
+            "plans": [
+                {
+                    "name": "الباقة الأساسية",
+                    "price": "99 ج.م",
+                    "desc": "مثالية للبداية"
+                },
+                {
+                    "name": "الباقة المتقدمة",
+                    "price": "199 ج.م",
+                    "desc": "للشركات المتنامية"
+                },
+                {
+                    "name": "الباقة الاحترافية",
+                    "price": "499 ج.م",
+                    "desc": "حلول متكاملة"
+                }
+            ]
+        },
+        "testimonials": [
+            {
+                "quote": "خدمة ممتازة ومنتجات عالية الجودة",
+                "author": "أحمد محمد"
+            },
+            {
+                "quote": "توصيل سريع جداً وتعامل راقٍ",
+                "author": "سارة أحمد"
+            }
+        ],
+        "booking": {
+            "title": "احجز استشارتك الآن"
         }
     },
     "features": {

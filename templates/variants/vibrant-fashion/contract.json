@@ -1,0 +1,10 @@
+{
+    "id": "vibrant-fashion",
+    "vertical": "fashion",
+    "layout": "ecommerce-01",
+    "tokenProfile": "vibrant",
+    "componentVariants": {
+        "header": "sticky",
+        "hero": "default"
+    }
+}

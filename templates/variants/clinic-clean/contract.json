@@ -1,0 +1,9 @@
+{
+    "id": "clinic-clean",
+    "vertical": "medical",
+    "layout": "clinic-01",
+    "tokenProfile": "medical",
+    "componentVariants": {
+        "booking": "appointment"
+    }
+}

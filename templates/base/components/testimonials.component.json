@@ -1,0 +1,9 @@
+{
+    "id": "testimonials",
+    "name": "Testimonials",
+    "supportedVariants": [
+        "default",
+        "slider",
+        "list"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "id": "freelancer-modern",
+    "vertical": "freelancer",
+    "layout": "freelancer-01",
+    "tokenProfile": "minimalist",
+    "componentVariants": {
+        "pricing": "tier"
+    }
+}

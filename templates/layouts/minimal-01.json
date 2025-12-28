@@ -1,0 +1,9 @@
+{
+    "id": "minimal-01",
+    "name": "Ultra Minimalist",
+    "sections": [
+        "header",
+        "hero",
+        "footer"
+    ]
+}

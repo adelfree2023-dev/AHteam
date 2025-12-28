@@ -1,0 +1,9 @@
+{
+    "id": "vibrant-electronics",
+    "vertical": "electronics",
+    "layout": "ecommerce-01",
+    "tokenProfile": "vibrant",
+    "componentVariants": {
+        "hero": "video"
+    }
+}

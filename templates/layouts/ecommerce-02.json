@@ -1,0 +1,11 @@
+{
+    "id": "ecommerce-02",
+    "name": "Brand Store",
+    "sections": [
+        "header",
+        "hero",
+        "gallery",
+        "featured-products",
+        "footer"
+    ]
+}

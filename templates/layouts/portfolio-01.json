@@ -1,0 +1,10 @@
+{
+    "id": "portfolio-01",
+    "name": "Art Portfolio",
+    "sections": [
+        "header",
+        "hero",
+        "gallery",
+        "footer"
+    ]
+}

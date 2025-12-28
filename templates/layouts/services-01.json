@@ -1,0 +1,11 @@
+{
+    "id": "services-01",
+    "name": "Corporate Services",
+    "sections": [
+        "header",
+        "features",
+        "testimonials",
+        "contact",
+        "footer"
+    ]
+}

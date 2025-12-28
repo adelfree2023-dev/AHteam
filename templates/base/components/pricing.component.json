@@ -1,0 +1,9 @@
+{
+    "id": "pricing",
+    "name": "Pricing Table",
+    "supportedVariants": [
+        "default",
+        "tier",
+        "compact"
+    ]
+}

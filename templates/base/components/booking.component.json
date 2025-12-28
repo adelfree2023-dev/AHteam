@@ -1,0 +1,9 @@
+{
+    "id": "booking",
+    "name": "Booking Form",
+    "supportedVariants": [
+        "default",
+        "compact",
+        "appointment"
+    ]
+}

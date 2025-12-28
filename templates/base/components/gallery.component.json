@@ -1,0 +1,9 @@
+{
+    "id": "gallery",
+    "name": "Gallery",
+    "supportedVariants": [
+        "default",
+        "grid",
+        "masonry"
+    ]
+}

@@ -1,0 +1,12 @@
+<section class="testimonials-section">
+    <div class="container">
+        <div class="testimonials-slider">
+            {{#each content.testimonials}}
+            <div class="testimonial-card">
+                <p>"{{item.quote}}"</p>
+                <strong>{{item.author}}</strong>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>

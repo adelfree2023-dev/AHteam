@@ -1,0 +1,24 @@
+<section class="gallery-section">
+    <div class="container">
+        <h2>{{content.gallery.title}}</h2>
+        <div class="gallery-grid">
+            {{#each content.gallery.items}}
+            <div class="gallery-item">
+                <img src="{{item.image}}" alt="{{item.title}}">
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+<style>
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        border-radius: var(--radius-md);
+    }
+</style>

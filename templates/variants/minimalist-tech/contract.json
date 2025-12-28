@@ -1,0 +1,10 @@
+{
+    "id": "minimalist-tech",
+    "vertical": "technology",
+    "layout": "minimal-01",
+    "tokenProfile": "minimalist",
+    "componentVariants": {
+        "header": "static",
+        "hero": "minimalist"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "id": "portfolio-dark",
+    "vertical": "portfolio",
+    "layout": "portfolio-01",
+    "tokenProfile": "portfolio",
+    "componentVariants": {
+        "gallery": "masonry"
+    }
+}

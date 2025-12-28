@@ -1,0 +1,10 @@
+{
+    "id": "ecommerce-01",
+    "name": "Direct Shop",
+    "sections": [
+        "header",
+        "hero",
+        "featured-products",
+        "footer"
+    ]
+}

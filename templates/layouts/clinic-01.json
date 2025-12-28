@@ -1,0 +1,11 @@
+{
+    "id": "clinic-01",
+    "name": "Medical Clinic",
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "booking",
+        "footer"
+    ]
+}

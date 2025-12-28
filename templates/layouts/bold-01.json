@@ -1,0 +1,12 @@
+{
+    "id": "bold-01",
+    "name": "Bold Impact",
+    "sections": [
+        "header",
+        "hero",
+        "gallery",
+        "testimonials",
+        "booking",
+        "footer"
+    ]
+}

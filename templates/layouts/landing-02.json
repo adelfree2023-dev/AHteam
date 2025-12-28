@@ -1,0 +1,11 @@
+{
+    "id": "landing-02",
+    "name": "Advanced Landing",
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "testimonials",
+        "footer"
+    ]
+}

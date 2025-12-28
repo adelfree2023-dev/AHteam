@@ -1,0 +1,9 @@
+{
+    "id": "services-bold",
+    "vertical": "corporate",
+    "layout": "services-01",
+    "tokenProfile": "vibrant",
+    "componentVariants": {
+        "features": "minimal"
+    }
+}

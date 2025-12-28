@@ -1,0 +1,9 @@
+{
+    "id": "minimal-clinic",
+    "vertical": "medical",
+    "layout": "minimal-01",
+    "tokenProfile": "medical",
+    "componentVariants": {
+        "header": "static"
+    }
+}

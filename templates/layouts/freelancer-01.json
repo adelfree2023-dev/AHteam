@@ -1,0 +1,11 @@
+{
+    "id": "freelancer-01",
+    "name": "Freelancer Services",
+    "sections": [
+        "header",
+        "hero",
+        "pricing",
+        "testimonials",
+        "footer"
+    ]
+}

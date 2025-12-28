@@ -1,0 +1,10 @@
+{
+    "id": "landing-01",
+    "name": "Standard Landing",
+    "sections": [
+        "header",
+        "hero",
+        "features",
+        "footer"
+    ]
+}
